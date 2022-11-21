@@ -288,6 +288,7 @@ function GlobalStoreContextProvider(props) {
         history.push("/");
     }
 
+
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
         let newListName = "Untitled" + store.newListCounter;
@@ -411,6 +412,18 @@ function GlobalStoreContextProvider(props) {
             }
         }
         asyncSetCurrentList(id);
+    }
+
+    store.getListOwner = function(id) {
+        async function asyncGetListOwner(id){
+        let response = await api.getPlaylistOwner(id);
+            if (response.data.success) {
+                let userName = response.data.userName;
+                console.log(userName)
+                return userName;
+            }
+        }
+        return asyncGetListOwner(id)
     }
 
     store.getPlaylistSize = function() {

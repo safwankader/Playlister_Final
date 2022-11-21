@@ -43,7 +43,7 @@ function SongCard(props) {
         }
     }
 
-    let cardClass = "list-card unselected-list-card";
+    let cardClass = "list-card unselected-list-card song-card";
     return (
         <div
             key={index}
@@ -64,6 +64,7 @@ function SongCard(props) {
                 href={"https://www.youtube.com/watch?v=" + song.youTubeId}>
                 {song.title} by {song.artist}
             </a>
+            
             <input
                 type="button"
                 id={"remove-song-" + index}

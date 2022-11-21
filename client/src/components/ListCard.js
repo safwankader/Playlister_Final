@@ -7,6 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 
+import AuthContext from '../auth';
+
+
 /*
     This is a card in our list of playlists. It lets select
     a list for editing and it has controls for changing its 
@@ -15,11 +18,13 @@ import TextField from '@mui/material/TextField';
     @author McKilla Gorilla
 */
 function ListCard(props) {
+    const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const { idNamePair, selected } = props;
+    const { idNamePair, selected, listOwner } = props;
 
+    console.log(listOwner);
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
         if (!event.target.disabled) {
@@ -65,6 +70,9 @@ function ListCard(props) {
         setText(event.target.value);
     }
 
+
+
+
     let selectClass = "unselected-list-card";
     if (selected) {
         selectClass = "selected-list-card";
@@ -73,28 +81,32 @@ function ListCard(props) {
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
+
+
     let cardElement =
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
+            class={selectClass}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
-            style={{ width: '100%', fontSize: '48pt' }}
+            style={{ width: '50%', fontSize: '30pt' }}
             button
             onClick={(event) => {
                 handleLoadList(event, idNamePair._id)
             }}
         >
-            <Box sx={{ p: 1, flexGrow: 1, overflowX: 'auto' }}>{idNamePair.name}</Box>
+            <Box sx={{ p: 1, flexGrow: 1, overflowX: 'auto' , fontSize: '20pt'}}>{idNamePair.name}</Box>
+            <Box sx={{ fontSize : '15pt', }}>By{listOwner}</Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{fontSize:'48pt'}} />
+                    <EditIcon style={{fontSize:'30pt'}} />
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
                     }} aria-label='delete'>
-                    <DeleteIcon style={{fontSize:'48pt'}} />
+                    <DeleteIcon style={{fontSize:'30pt'}} />
                 </IconButton>
             </Box>
         </ListItem>
