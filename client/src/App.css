@@ -209,6 +209,10 @@ body {
   color: white;
 }
 
+.expanded-list-card {
+  position: absolute;
+}
+
 .unselected-list-card {
   background-color: var(--swatch-complement);
 }

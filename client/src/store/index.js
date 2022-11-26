@@ -292,10 +292,12 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
         let newListName = "Untitled" + store.newListCounter;
-        const response = await api.createPlaylist(newListName, [], auth.user.email);
+        console.log(auth.user)
+        const response = await api.createPlaylist(newListName, [], auth.user.email, `${auth.user.firstName} ${auth.user.lastName}`);
         if (response.status === 201) {
             tps.clearAllTransactions();
             let newList = response.data.playlist;
+            console.log(newList)
             storeReducer({
                 type: GlobalStoreActionType.CREATE_NEW_LIST,
                 payload: newList
@@ -414,17 +416,6 @@ function GlobalStoreContextProvider(props) {
         asyncSetCurrentList(id);
     }
 
-    store.getListOwner = function(id) {
-        async function asyncGetListOwner(id){
-        let response = await api.getPlaylistOwner(id);
-            if (response.data.success) {
-                let userName = response.data.userName;
-                console.log(userName)
-                return userName;
-            }
-        }
-        return asyncGetListOwner(id)
-    }
 
     store.getPlaylistSize = function() {
         return store.currentList.songs.length;

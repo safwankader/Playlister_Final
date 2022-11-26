@@ -27,7 +27,7 @@ export const createPlaylist = (newListName, newSongs, userEmail) => {
         // SPECIFY THE PAYLOAD
         name: newListName,
         songs: newSongs,
-        ownerEmail: userEmail
+        ownerEmail: userEmail,
     })
 }
 export const deletePlaylistById = (id) => api.delete(`/playlist/${id}`)
@@ -39,7 +39,6 @@ export const updatePlaylistById = (id, playlist) => {
         playlist : playlist
     })
 }
-export const getPlaylistOwner = (id) => api.get(`playlist/owner/${id}`)
 
 const apis = {
     createPlaylist,
@@ -47,7 +46,6 @@ const apis = {
     getPlaylistById,
     getPlaylistPairs,
     updatePlaylistById,
-    getPlaylistOwner
 }
 
 export default apis

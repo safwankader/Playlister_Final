@@ -4,13 +4,11 @@ import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
 import PeopleIcon from '@mui/icons-material/People';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography'
 import CustomizedInputBase from './CustomInputField';
 import Box from '@mui/material/Box';
+import HomeIcon from '@mui/icons-material/Home';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -26,6 +24,11 @@ const HomeScreen = () => {
     function handleCreateNewList() {
         store.createNewList();
     }
+
+    function handleCloseCurrentList() {
+        store.closeCurrentList()
+    }
+    
     let listCard = "";
     if (store) {
         listCard = 
@@ -36,7 +39,6 @@ const HomeScreen = () => {
                         key={pair._id}
                         idNamePair={pair}
                         selected={false}
-                        listOwner={store.getListOwner(pair._id)}
                     />
                 ))
             }
@@ -62,8 +64,9 @@ const HomeScreen = () => {
                 size="medium"
                 color="secondary"
                 aria-label='add'
+                onClick={handleCloseCurrentList}
                 >
-                <AddIcon />
+                <HomeIcon />
                 </Fab>
             <Fab
             
@@ -81,7 +84,7 @@ const HomeScreen = () => {
                 <PeopleIcon />
                 </Fab>
             </Box>
-            <Box sx={{ '& > :not(style)': { left : "50%", ml : 1 } }}>
+            <Box sx={{ '& > :not(style)': {display: "flex", left : "50%", mt : 2, ml : 20 } }}>
             <CustomizedInputBase />
             </Box>
                 
@@ -94,6 +97,10 @@ const HomeScreen = () => {
                     listCard
                 }
                 <MUIDeleteModal />
+            </div>
+
+            <div id='youtube-player'>
+                
             </div>
         </div>)
 }

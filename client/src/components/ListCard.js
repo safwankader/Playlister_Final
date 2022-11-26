@@ -22,9 +22,9 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const { idNamePair, selected, listOwner } = props;
+    const { idNamePair, selected} = props;
 
-    console.log(listOwner);
+
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
         if (!event.target.disabled) {
@@ -82,6 +82,8 @@ function ListCard(props) {
         cardStatus = true;
     }
 
+    console.log(idNamePair)
+
 
     let cardElement =
         <ListItem
@@ -96,8 +98,7 @@ function ListCard(props) {
             }}
         >
             <Box sx={{ p: 1, flexGrow: 1, overflowX: 'auto' , fontSize: '20pt'}}>{idNamePair.name}</Box>
-            <Box sx={{ fontSize : '15pt', }}>By{listOwner}</Box>
-            <Box sx={{ p: 1 }}>
+            {/* <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
                     <EditIcon style={{fontSize:'30pt'}} />
                 </IconButton>
@@ -108,7 +109,9 @@ function ListCard(props) {
                     }} aria-label='delete'>
                     <DeleteIcon style={{fontSize:'30pt'}} />
                 </IconButton>
-            </Box>
+            </Box> */}
+
+            
         </ListItem>
 
     if (editActive) {

@@ -12,6 +12,11 @@ import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
 import { GlobalStoreContext } from '../store/index.js'
 import AuthContext from '../auth/index.js'
+import PeopleIcon from '@mui/icons-material/People';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import Fab from '@mui/material/Fab'
+import HomeIcon from '@mui/icons-material/Home';
+import CustomizedInputBase from './CustomInputField';
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -25,6 +30,10 @@ function WorkspaceScreen() {
     
     function handleCloseModal(event) {
         auth.logoutUser();
+    }
+
+    function handleCloseCurrentList() {
+        store.closeCurrentList()
     }
 
     let errorMessage = "";
@@ -42,7 +51,7 @@ function WorkspaceScreen() {
     if (store.currentList) {
         songList = <List 
             id="playlist-cards" 
-            sx={{ width: '100%', bgcolor: 'background.paper'}}
+            sx={{ width: '100%'}}
         >
             {
                 store.currentList.songs.map((song, index) => (
@@ -82,7 +91,39 @@ function WorkspaceScreen() {
 
 
     return (
+        
         <Box style={{maxHeight: '83%', overflow: 'auto'}}>
+            <Box component="div" sx={{ display: 'flex' }}>
+            <Box sx={{ '& > :not(style)': { ml: 2, mr: 0.5, mt: 2} }}>
+            <Fab
+                size="medium"
+                color="secondary"
+                aria-label='add'
+                onClick={handleCloseCurrentList}
+                >
+                <HomeIcon />
+                </Fab>
+            <Fab
+            
+                size="medium"
+                color="secondary"
+                aria-label='search-lists'
+                >
+                <ManageSearchIcon />
+                </Fab>
+            <Fab
+                size="medium"
+                color="secondary"
+                aria-label='search-users'
+                >
+                <PeopleIcon />
+                </Fab>
+            </Box>
+            <Box sx={{ '& > :not(style)': {display: "flex", left : "50%", mt : 2, ml : 20 } }}>
+            <CustomizedInputBase />
+            </Box>
+                
+            </Box>
          { songList }
          { modalJSX }
          { errorModal }

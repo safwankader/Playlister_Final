@@ -45,6 +45,7 @@ createPlaylist = (req, res) => {
             });
     })
 }
+
 deletePlaylist = async (req, res) => {
     console.log("delete Playlist with id: " + JSON.stringify(req.params.id));
     console.log("delete " + req.params.id);
@@ -79,20 +80,6 @@ deletePlaylist = async (req, res) => {
     })
 }
 
-getPlaylistOwner = async (req,res) => {
-    await Playlist.findById({_id: req.params.id}, (err,list) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err });
-        }
-        async function asyncFindUser(list){
-            await User.findOne({email : list.ownerEmail}, (err, user) => {
-                return res.status(200).json({success : true, userName : `${user.firstName} ${user.lastName}`})
-            })
-        }
-        asyncFindUser(list);
-
-    }).catch(err => console.log(err));
-}
 getPlaylistById = async (req, res) => {
     console.log("Find Playlist with id: " + JSON.stringify(req.params.id));
 
@@ -120,6 +107,7 @@ getPlaylistById = async (req, res) => {
         asyncFindUser(list);
     }).catch(err => console.log(err))
 }
+
 getPlaylistPairs = async (req, res) => {
     console.log("getPlaylistPairs");
     await User.findOne({ _id: req.userId }, (err, user) => {
@@ -142,10 +130,13 @@ getPlaylistPairs = async (req, res) => {
                     // PUT ALL THE LISTS INTO ID, NAME PAIRS
                     let pairs = [];
                     for (let key in playlists) {
+                        
                         let list = playlists[key];
+                        console.log(list.owner)
                         let pair = {
                             _id: list._id,
-                            name: list.name
+                            name: list.name,
+                            owner : `${list.ownerName}`
                         };
                         pairs.push(pair);
                     }
@@ -234,6 +225,5 @@ module.exports = {
     getPlaylistById,
     getPlaylistPairs,
     getPlaylists,
-    updatePlaylist,
-    getPlaylistOwner
+    updatePlaylist
 }
