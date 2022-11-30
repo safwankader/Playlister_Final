@@ -152,6 +152,8 @@ function AuthContextProvider(props) {
         }
     }
 
+
+
     auth.getUserInitials = function() {
         let initials = "";
         if (auth.user) {

@@ -282,7 +282,7 @@ function GlobalStoreContextProvider(props) {
     store.closeCurrentList = function () {
         storeReducer({
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
-            payload: {}
+            payload: null
         });
         tps.clearAllTransactions();
         history.push("/");
@@ -305,7 +305,7 @@ function GlobalStoreContextProvider(props) {
             );
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/playlist/" + newList._id);
+            history.push("/");
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -409,13 +409,13 @@ function GlobalStoreContextProvider(props) {
                         type: GlobalStoreActionType.SET_CURRENT_LIST,
                         payload: playlist
                     });
-                    history.push("/playlist/" + playlist._id);
                 }
             }
         }
         asyncSetCurrentList(id);
     }
 
+    
 
     store.getPlaylistSize = function() {
         return store.currentList.songs.length;

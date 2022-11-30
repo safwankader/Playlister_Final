@@ -17,6 +17,8 @@ import HomeIcon from '@mui/icons-material/Home';
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
 
+    
+
     useEffect(() => {
         store.loadIdNamePairs();
     }, []);
@@ -38,7 +40,9 @@ const HomeScreen = () => {
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}
+                        songs={pair.songs}
                         selected={false}
+                        expanded={store.currentList !== null && store.currentList.id === pair._id}
                     />
                 ))
             }
@@ -63,7 +67,7 @@ const HomeScreen = () => {
             <Fab
                 size="medium"
                 color="secondary"
-                aria-label='add'
+                aria-label='home'
                 onClick={handleCloseCurrentList}
                 >
                 <HomeIcon />
@@ -84,7 +88,7 @@ const HomeScreen = () => {
                 <PeopleIcon />
                 </Fab>
             </Box>
-            <Box sx={{ '& > :not(style)': {display: "flex", left : "50%", mt : 2, ml : 20 } }}>
+            <Box sx={{ '& > :not(style)': {display: "flex", left : "50%", mt : 2, ml : 40 } }}>
             <CustomizedInputBase />
             </Box>
                 

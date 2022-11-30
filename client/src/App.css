@@ -9,7 +9,7 @@
   --swatch-foundation: #eeeedd;
   --swatch-primary: #e6e6e6;
   --swatch-complement: #e1e4cb;
-  --swatch-contrast: #111111;
+  --swatch-contrast: #1c64ff;
   --swatch-accent: #669966;
   --swatch-status: #123456;
   --my-font-family: "Robaaaoto";
@@ -55,6 +55,7 @@ body {
 }
 #splash-screen {
   background-image: linear-gradient(to bottom, #08b8a1, #234367);
+  font-family: "Brush Script MT", cursive;
   color: white;
   font-size: 5vw;
   border-color: #123456;
@@ -70,6 +71,88 @@ body {
 #edit-toolbar {
   background-color: transparent;
   float: right;
+}
+
+#playlister-title-text {
+  font-family: "Brush Script MT", cursive;
+}
+
+.home-screen-button {
+  margin-left: 2rem;
+  align-items: center;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.home-screen-button:hover {
+  background: #f6f9fe;
+  color: #174ea6;
+}
+
+.home-screen-button:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%),
+    0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+}
+
+.home-screen-button:focus {
+  outline: none;
+  border: 2px solid #4285f4;
+}
+
+.home-screen-button:not(:disabled) {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.home-screen-button:not(:disabled):hover {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
+}
+
+.home-screen-button:not(:disabled):focus {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.home-screen-button:not(:disabled):active {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+}
+
+.home-screen-button:disabled {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
 }
 
 .playlister-button,
@@ -103,7 +186,7 @@ body {
   position: absolute;
   left: 0%;
   top: 10%;
-  width: 100%;
+  width: 50%;
   height: 80%;
   background-color: var(--swatch-primary);
 }
@@ -166,13 +249,20 @@ body {
 
 #list-selector-list {
   max-height: 83%;
-  position: relative;
+  margin-top: 5%;
+  position: absolute;
   left: 0%;
   top: 10%;
-  width: 100%;
-  height: 90%;
+  width: 55%;
+  height: 70%;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+}
+
+#song-card-list {
+  margin-top: 3rem;
+  width: 100px;
   overflow: scroll;
 }
 
