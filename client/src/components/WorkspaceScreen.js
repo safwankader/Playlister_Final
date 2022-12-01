@@ -16,7 +16,6 @@ import PeopleIcon from '@mui/icons-material/People';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import Fab from '@mui/material/Fab'
 import HomeIcon from '@mui/icons-material/Home';
-import CustomizedInputBase from './CustomInputField';
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -120,7 +119,7 @@ function WorkspaceScreen() {
                 </Fab>
             </Box>
             <Box sx={{ '& > :not(style)': {display: "flex", left : "50%", mt : 2, ml : 20 } }}>
-            <CustomizedInputBase />
+
             </Box>
                 
             </Box>

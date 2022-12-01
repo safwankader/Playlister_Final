@@ -19,6 +19,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import SongCard from './SongCard.js'
 import List from '@mui/material/List';
+import EditToolbar from './EditToolbar'
 
 
 /*
@@ -41,7 +42,6 @@ function ListCard(props) {
 
 
     function handleLoadList(event, id) {
-        console.log("handleLoadList for " + id);
         if (!event.target.disabled) {
             let _id = event.target.id;
             if (_id.indexOf('list-card-text-') >= 0)
@@ -54,18 +54,6 @@ function ListCard(props) {
         }
     }
 
-    
-
-    function handleToggleExpand(){
-        setExpanded(!expanded);
-        if(expanded) {
-            setNewList();
-        }
-    }
-
-    function setNewList(){
-        store.setCurrentList(idNamePair._id);
-    }
 
     
 
@@ -75,26 +63,6 @@ function ListCard(props) {
         _id = ("" + _id).substring("delete-list-".length);
         store.markListForDeletion(id);
     }
-
-    // function handleKeyPress(event) {
-    //     if (event.code === "Enter") {
-    //         let id = event.target.id.substring("list-".length);
-    //         store.changeListName(id, text);
-    //         toggleEdit();
-    //     }
-    // }
-    // function handleUpdateText(event) {
-    //     setText(event.target.value);
-    // }
-
-
-    useEffect(() =>{
-        if(store.currentList  && store.currentList.id !== idNamePair._id){
-            console.log("STORE " + store.currentList.id)
-            console.log(idNamePair._id)
-            setExpanded(false);
-        }
-    })
 
     let selectClass = "unselected-list-card";
     if (selected) {
@@ -111,13 +79,19 @@ function ListCard(props) {
     let dislikeIcon = 
     <ThumbDownOffAltIcon style={{fontSize:'30pt'}} />
 
-    let songCards = <div></div>
+    let songListClass = "unpublished-song-card-list";
 
-    
+    if(idNamePair.published){
+        songListClass = "published-song-card-list"
+    }
+
+    let songCards = "";
+
     if(store.currentList){
     songCards = 
-    <div id="song-card-list">
+    <div id={songListClass}>
     <List 
+        
         sx={{ width: '100%'}}
     >
         {
@@ -133,6 +107,14 @@ function ListCard(props) {
         }
      </List> 
      </div>}
+
+
+    useEffect(() => {
+        if(store.currentList && store.currentList._id !== idNamePair._id){
+            setExpanded(false);
+        }
+
+    })
     
 
     let cardElement =
@@ -192,7 +174,12 @@ function ListCard(props) {
             <KeyboardDoubleArrowDownIcon
             id={`open-list-${idNamePair._id}`}
             sx={{fontSize: '28pt', position : 'absolute', pt : 5, mt : 0, ml :90}}
-            onClick={handleToggleExpand}
+            onClick={(event) => {
+                store.closeCurrentList();
+                event.stopPropagation();
+                setExpanded(true);
+                handleLoadList(event, idNamePair._id)
+            }}
             ></KeyboardDoubleArrowDownIcon>
             
 
@@ -215,7 +202,7 @@ function ListCard(props) {
             <Typography
                 id='list-owner'
                 component='div'
-                sx={{fontSize: '10pt', position : 'flex', pt : 3, mt : 0.5, ml : 0.5}}
+                sx={{fontSize: '10pt', position : 'absolute', pt : 3, mt : 0.5, ml : 0.5}}
             >
 
                 By &nbsp;&nbsp;&nbsp;{idNamePair.owner}
@@ -248,8 +235,8 @@ function ListCard(props) {
                 songCards
             }
 
-
-            <Typography
+            <div> {idNamePair.published ?
+             <div> <Typography
                 id='publish-date'
                 component='div'
                 sx={{fontSize: '10pt', position : 'absolute', pt : 3, mt : 56, ml : 0.5}}
@@ -263,12 +250,27 @@ function ListCard(props) {
                 sx={{fontSize: '10pt', position : 'absolute', pt : 6, mt : 52, ml : 80}}
             >
                 Listens :  {idNamePair.listens}
-            </Typography>
+            </Typography> 
+            </div> : 
+            <div>
+                <EditToolbar
+                id='edit-toolbar'
+                />
+            </div>
+            
+            }
+            
 
+
+            </div>
             <KeyboardDoubleArrowUpIcon
             id={`close-list-${idNamePair._id}`}
             sx={{fontSize: '28pt', position : 'absolute', pt : 5, mt : 52, ml :90}}
-            onClick={handleToggleExpand}
+            onClick={(event) => {
+                event.stopPropagation();
+                setExpanded(false);
+                store.closeCurrentList();
+            }}
             ></KeyboardDoubleArrowUpIcon>
 
             

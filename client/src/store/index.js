@@ -305,11 +305,12 @@ function GlobalStoreContextProvider(props) {
             );
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/");
+            // history.push("/");
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
+        history.push('/')
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS

@@ -2,13 +2,8 @@ import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
-import PeopleIcon from '@mui/icons-material/People';
-import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
-import CustomizedInputBase from './CustomInputField';
-import Box from '@mui/material/Box';
-import HomeIcon from '@mui/icons-material/Home';
+import NavigationBar from './NavigationBar';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -23,13 +18,8 @@ const HomeScreen = () => {
         store.loadIdNamePairs();
     }, []);
 
-    function handleCreateNewList() {
-        store.createNewList();
-    }
 
-    function handleCloseCurrentList() {
-        store.closeCurrentList()
-    }
+    
     
     let listCard = "";
     if (store) {
@@ -62,38 +52,8 @@ const HomeScreen = () => {
             </Fab>
                 <Typography variant="h2">Your Lists</Typography> */}
             </div>
-            <Box component="div" sx={{ display: 'flex' }}>
-            <Box sx={{ '& > :not(style)': { ml: 2, mr: 0.5, mt: 2} }}>
-            <Fab
-                size="medium"
-                color="secondary"
-                aria-label='home'
-                onClick={handleCloseCurrentList}
-                >
-                <HomeIcon />
-                </Fab>
-            <Fab
             
-                size="medium"
-                color="secondary"
-                aria-label='search-lists'
-                >
-                <ManageSearchIcon />
-                </Fab>
-            <Fab
-                size="medium"
-                color="secondary"
-                aria-label='search-users'
-                >
-                <PeopleIcon />
-                </Fab>
-            </Box>
-            <Box sx={{ '& > :not(style)': {display: "flex", left : "50%", mt : 2, ml : 40 } }}>
-            <CustomizedInputBase />
-            </Box>
-                
-            </Box>
-                
+            <NavigationBar />
 
             
             <div id="list-selector-list">

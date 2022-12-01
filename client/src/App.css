@@ -6,11 +6,11 @@
     
         @author McKilla Gorilla
     */
-  --swatch-foundation: #eeeedd;
-  --swatch-primary: #e6e6e6;
-  --swatch-complement: #e1e4cb;
-  --swatch-contrast: #1c64ff;
-  --swatch-accent: #669966;
+  --swatch-foundation: #94d1be;
+  --swatch-primary: #daf0ee;
+  --swatch-complement: #9db5b2;
+  --swatch-contrast: #3b413c;
+  --swatch-accent: #ffffff;
   --swatch-status: #123456;
   --my-font-family: "Robaaaoto";
   --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
@@ -260,10 +260,30 @@ body {
   overflow: scroll;
 }
 
-#song-card-list {
-  margin-top: 3rem;
-  width: 100px;
+#unpublished-song-card-list {
+  margin-top: 4rem;
+  height: 75%;
+  width: 100%;
   overflow: scroll;
+  background-color: #123456;
+  border-radius: 10px;
+}
+
+#published-song-card-list {
+  margin-top: 4rem;
+  height: 80%;
+  width: 100%;
+  overflow: scroll;
+  background-color: #123456;
+  border-radius: 10px;
+}
+
+#edit-toolbar {
+  display: flex;
+  position: absolute;
+  margin-top: 50%;
+  top: 8.5%;
+  right: 70%;
 }
 
 .list-card,
@@ -308,6 +328,7 @@ body {
 }
 
 .list-card-button {
+  display: grid;
   position: relative;
   float: right;
   left: 60%;
@@ -318,7 +339,24 @@ body {
 }
 
 .song-card {
+  margin: 10px;
+  font-size: 18pt;
   height: auto;
+  background-color: #b9c45e;
+  padding: 15px;
+  border-radius: 25px;
+}
+
+.song-card:hover {
+  background-color: #999999;
+}
+
+.song-card-button {
+  position: relative;
+  float: right;
+  bottom: 10%;
+  border: none;
+  background: none;
 }
 
 #workspace-home,
