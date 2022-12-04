@@ -4,6 +4,10 @@ import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
 import List from '@mui/material/List';
 import NavigationBar from './NavigationBar';
+import ViewerCommentTabs from './ViewCommentTabs';
+import MUIEditSongModal from './MUIEditSongModal';
+import MUIRemoveSongModal from './MUIRemoveSongModal';
+
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -19,7 +23,17 @@ const HomeScreen = () => {
     }, []);
 
 
-    
+    let modalJSX = "";
+    if(store.isEditSongModalOpen()){
+        modalJSX = <MUIEditSongModal/>
+    }
+    if(store.isRemoveSongModalOpen()){
+        modalJSX = <MUIRemoveSongModal/>
+    }
+
+    if(store.isDeleteListModalOpen()){
+        modalJSX = <MUIDeleteModal/>
+    }
     
     let listCard = "";
     if (store) {
@@ -32,7 +46,6 @@ const HomeScreen = () => {
                         idNamePair={pair}
                         songs={pair.songs}
                         selected={false}
-                        expanded={store.currentList !== null && store.currentList.id === pair._id}
                     />
                 ))
             }
@@ -40,32 +53,23 @@ const HomeScreen = () => {
     }
     return (
         <div id="playlist-selector">
-            <div id="list-selector-heading">
-               
-            {/* <Fab 
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-            >
-                <AddIcon />
-            </Fab>
-                <Typography variant="h2">Your Lists</Typography> */}
-            </div>
             
-            <NavigationBar />
-
             
+            <NavigationBar />   
+            
+            <div id='home-screen-content'>
             <div id="list-selector-list">
                 {
                     listCard
                 }
-                <MUIDeleteModal />
-            </div>
-
-            <div id='youtube-player'>
                 
             </div>
+            <div id='youtube-player'>
+                <ViewerCommentTabs/>
+            </div>
+            </div>
+            {modalJSX}
+
         </div>)
 }
 

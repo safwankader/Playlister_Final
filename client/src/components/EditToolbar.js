@@ -24,11 +24,9 @@ function EditToolbar() {
     function handleRedo() {
         store.redo();
     }
-    function handleClose() {
-        store.closeCurrentList();
-    }
+    
     return (
-        <div id="edit-toolbar">
+        <div>
             <Button
                 disabled={!store.canAddNewSong()}
                 id='add-song-button'
@@ -50,6 +48,8 @@ function EditToolbar() {
                 variant="contained">
                     <RedoIcon />
             </Button>
+           
+
 
         </div>
     )

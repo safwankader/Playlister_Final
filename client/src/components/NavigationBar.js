@@ -16,16 +16,16 @@ function NavigationBar() {
     }
 
     return(
-        <Box
+        <div
         component='div'
         id="navigation-bar">
-        <Box component="div" sx={{ display: 'flex' }}>
-            <Box sx={{ '& > :not(style)': { ml: 2, mr: 0.5, mt: 2} }}>
             <Fab
                 size="medium"
                 color="secondary"
                 aria-label='home'
+                className='navbar-button'
                 onClick={handleCloseCurrentList}
+                sx={{ml : 1}}
                 >
                 <HomeIcon />
                 </Fab>
@@ -34,6 +34,8 @@ function NavigationBar() {
                 size="medium"
                 color="secondary"
                 aria-label='search-lists'
+                className='navbar-button'
+                sx={{ml : 1, }}
                 >
                 <ManageSearchIcon />
                 </Fab>
@@ -41,32 +43,31 @@ function NavigationBar() {
                 size="medium"
                 color="secondary"
                 aria-label='search-users'
+                className='navbar-button'
+                sx={{ml : 1, mr : 1}}
                 >
                 <PeopleIcon />
                 </Fab>
-                
-            </Box>
-            <TextField 
+                <TextField 
                 id="outlined-search" 
                 label="Search" 
                 type="search"
-                sx={{display: 'flex', mt : 1.5 , width : "35%", left : "20%", background : "white", }} />
+                sx={{flexGrow : 0.9, mt : -0.5}} />
                 
                 <Fab
                 variant='extended'
                 justify='space-between'
                 color="secondary"
                 aria-label='sort-by'
-                sx={{display: 'flex', mt : 2, justifyContent : 'flex-end', ml : 80}}
+                className='navbar-button'
+                sx={{ml : 1, mr : 1}}
                 >
                 <SortIcon />
                 SORT BY
                 </Fab>
 
-    
-            </Box>
             
-            </Box>
+            </div>
     )
 
 }

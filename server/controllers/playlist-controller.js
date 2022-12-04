@@ -132,11 +132,11 @@ getPlaylistPairs = async (req, res) => {
                     for (let key in playlists) {
                         
                         let list = playlists[key];
-                        console.log(list)
                         let pair = {
                             _id: list._id,
                             name: list.name,
                             owner : `${list.ownerName}`,
+                            published : list.published,
                             likes : list.likes.length,
                             dislikes : list.dislikes.length,
                             listens : list.listens,
@@ -196,6 +196,9 @@ updatePlaylist = async (req, res) => {
 
                     list.name = body.playlist.name;
                     list.songs = body.playlist.songs;
+                    list.likes = body.playlist.songs;
+                    list.dislikes = body.playlist.dislikes;
+                    list.published = body.playlist.published;
                     list
                         .save()
                         .then(() => {
