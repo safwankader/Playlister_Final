@@ -285,8 +285,18 @@ body {
 #youtube-video {
   display: flex;
   position: relative;
-  margin-top: 0.5rem;
+  margin-top: 0rem;
   border-radius: 2px;
+  flex-grow: 1;
+}
+
+#blank-youtube-page {
+  display: flex;
+  position: relative;
+  margin-top: 0rem;
+  border-radius: 2px;
+  height: 320px;
+  background-color: grey;
 }
 
 #unpublished-song-card-list {
@@ -298,13 +308,12 @@ body {
   border-radius: 10px;
 }
 
-#published-song-card-list {
-  margin-top: 0;
-  height: 50%;
-  width: 100%;
-  overflow: scroll;
-  background-color: #2c7ed1;
-  border-radius: 10px;
+.published-song-card-list {
+  display: flex;
+  background-color: #94d1be;
+
+  border-radius: 25px;
+  flex-direction: column;
 }
 
 #edit-toolbar {
@@ -428,10 +437,6 @@ body {
   color: white;
 }
 
-.expanded-list-card {
-  position: absolute;
-}
-
 .unpublished-list-card {
   background-color: var(--swatch-complement);
 }
@@ -450,10 +455,70 @@ body {
   margin-top: -2px;
 }
 
+.likes-dislikes-expanded {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: -12rem;
+  margin-left: 33rem;
+}
+
+.expanded-list-buttons-published {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  right: 90%;
+}
+
 .published-song-texts {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.comment-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 5px;
+  font-size: 14pt;
+  min-height: 4rem;
+  background-color: #b9c45e;
+  padding: 0.7rem;
+  border-radius: 15px;
+}
+
+.comment-card-text {
+  font-size: 10pt;
+}
+
+#comment-tab {
+  display: flex;
+  flex-direction: column;
+  background: var(--swatch-accent);
+  height: 34.5rem;
+  border-radius: 20px;
+}
+
+#add-comment-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  order: 2;
+  height: 4rem;
+  background-color: #b3d6f8;
+  position: relative;
+}
+
+#add-comment-textfield {
+  font-size: 1.5rem;
+  width: 36rem;
+  flex-grow: 1;
+}
+
+#comments-list {
+  height: 13cm;
+  width: 100%;
 }
 
 #list-card-styler {

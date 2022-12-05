@@ -2,18 +2,21 @@
 import React, { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 
-function CommentCard() {
+function CommentCard(props) {
     const { store } = useContext(GlobalStoreContext);
 
-    const {name, comment} = props;
+    const {comment, index} = props;
 
+    console.log(store.currentList.comments[index]);
 
     return(
         <div
             className='comment-card'>
-                <span>{name}</span>
-                <p>{comment}</p>
+                <span class='comment-card-text'>{comment.owner}</span>
+                <p>{comment.comment}</p>
         </div>
     )
 
 }
+
+export default CommentCard;

@@ -19,6 +19,7 @@ createPlaylist = (req, res) => {
     }
 
     const playlist = new Playlist(body);
+    
     console.log("playlist: " + playlist.toString());
     if (!playlist) {
         return res.status(400).json({ success: false, error: err })
@@ -44,6 +45,54 @@ createPlaylist = (req, res) => {
                     })
             });
     })
+}
+
+getPlaylistsByQuery = async (req,res) =>{
+    let body = req.body;
+    console.log("Query body: " + JSON.stringify(body));
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a Query',
+        })
+    }
+
+
+    const query = req.body.query;
+    await Playlist.find(query, (err, playlists) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!playlists.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Playlists not found` })
+        }
+        else{
+
+            let pairs = [];
+                    for (let key in playlists) {
+                        
+                        let list = playlists[key];
+                        let pair = {
+                            _id: list._id,
+                            name: list.name,
+                            owner : `${list.ownerName}`,
+                            comments : list.comments,
+                            published : list.published,
+                            likes : list.likes,
+                            dislikes : list.dislikes,
+                            listens : list.listens,
+                            createdAt : Date(list.createdAt).split(" ").slice(1,4).join(" ")
+                        };
+                        if(pair.published){
+                            pairs.push(pair);
+                        }
+                        
+                    }
+                    return res.status(200).json({ success: true, idNamePairs: pairs })
+        }
+    }).catch(err => console.log(err))
 }
 
 deletePlaylist = async (req, res) => {
@@ -136,9 +185,10 @@ getPlaylistPairs = async (req, res) => {
                             _id: list._id,
                             name: list.name,
                             owner : `${list.ownerName}`,
+                            comments : list.comments,
                             published : list.published,
-                            likes : list.likes.length,
-                            dislikes : list.dislikes.length,
+                            likes : list.likes,
+                            dislikes : list.dislikes,
                             listens : list.listens,
                             createdAt : Date(list.createdAt).split(" ").slice(1,4).join(" ")
                         };
@@ -193,12 +243,12 @@ updatePlaylist = async (req, res) => {
                 if (user._id == req.userId) {
                     console.log("correct user!");
                     console.log("req.body.name: " + req.body.name);
-
                     list.name = body.playlist.name;
                     list.songs = body.playlist.songs;
-                    list.likes = body.playlist.songs;
+                    list.likes = body.playlist.likes;
                     list.dislikes = body.playlist.dislikes;
                     list.published = body.playlist.published;
+                    list.comments = body.playlist.comments;
                     list
                         .save()
                         .then(() => {
@@ -229,6 +279,7 @@ updatePlaylist = async (req, res) => {
 module.exports = {
     createPlaylist,
     deletePlaylist,
+    getPlaylistsByQuery,
     getPlaylistById,
     getPlaylistPairs,
     getPlaylists,

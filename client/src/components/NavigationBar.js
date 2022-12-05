@@ -5,15 +5,44 @@ import Fab from '@mui/material/Fab'
 import { TextField } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SortIcon from '@mui/icons-material/Sort';
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 
 function NavigationBar() {
 
     const { store } = useContext(GlobalStoreContext);
-    function handleCloseCurrentList() {
-        store.closeCurrentList()
+    const [text, setText] = useState("");
+
+
+    function handleLoadUserPairs() {
+        store.loadIdNamePairs();
     }
+
+    function handleFindByName(){
+        if(text !== ""){
+            store.getPlaylistsByQuery({
+                name : text
+            })
+            setText("");
+        }
+
+    }
+
+    function handleFindByUser(){
+        if(text !== ""){
+            store.getPlaylistsByQuery({
+                owner : text
+            })
+
+            setText("");
+        }
+    }
+
+    function handleUpdateText(event) {
+        setText(event.target.value);
+      }
+
+
 
     return(
         <div
@@ -24,7 +53,7 @@ function NavigationBar() {
                 color="secondary"
                 aria-label='home'
                 className='navbar-button'
-                onClick={handleCloseCurrentList}
+                onClick={handleLoadUserPairs}
                 sx={{ml : 1}}
                 >
                 <HomeIcon />
@@ -35,6 +64,7 @@ function NavigationBar() {
                 color="secondary"
                 aria-label='search-lists'
                 className='navbar-button'
+                onClick={handleFindByName}
                 sx={{ml : 1, }}
                 >
                 <ManageSearchIcon />
@@ -44,6 +74,7 @@ function NavigationBar() {
                 color="secondary"
                 aria-label='search-users'
                 className='navbar-button'
+                onClick={handleFindByUser}
                 sx={{ml : 1, mr : 1}}
                 >
                 <PeopleIcon />
@@ -52,6 +83,8 @@ function NavigationBar() {
                 id="outlined-search" 
                 label="Search" 
                 type="search"
+                value={text}
+                onChange={handleUpdateText}
                 sx={{flexGrow : 0.9, mt : -0.5}} />
                 
                 <Fab

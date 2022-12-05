@@ -14,34 +14,43 @@ function YoutubePlayer() {
   let songNum = "";
   let title = "";
   let artist = "";
+  let player = "";
 
   if(store.currentList){
     name = store.currentList.name;
   }
+
+  if(store.youtubeQueue){
+    songNum = store.youtubeQueue.songNumberPlaying;
+    title = store.youtubeQueue.songNamePairs.title;
+    artist = store.youtubeQueue.songNamePairs.artist;
+  }
   const onPlayerReady = (event) => {
     // access to player in all event handlers via event.target
-    event.target.pauseVideo();
+    event.target.playVideo();
+    player = event.target;
+
   }
 
   function playVideo() {
-
+    player.playVideo();
   }
 
   function previousSong() {
-
+    store.playNextOrPrevSong(false)
   }
 
   function pauseVideo() {
-
+    player.pauseVideo();
   }
 
   function nextSong() {
-    
+    store.playNextOrPrevSong(true)
   }
 
   const opts = {
-    height: '340',
-    width: '620',
+    height: '320',
+    width: '685',
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
@@ -50,12 +59,12 @@ function YoutubePlayer() {
 
   return (
   <div id='youtube-video-card'>
+    {store.currentList ?<YouTube id='youtube-video' videoId={store.songInPlayer} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>}
     
-    <YouTube id='youtube-video' videoId="2g811Eo7K8U" opts={opts} onReady={onPlayerReady} />
     <span>Playlist: {name}</span>
-    <span>Song #: {}</span>
-    <span>Title: {}</span>
-    <span>Artist: {}</span>
+    <span>Song #: {songNum}</span>
+    <span>Title: {title}</span>
+    <span>Artist: {artist}</span>
     <div id='player-controls'>
         <IconButton onClick={previousSong}> <SkipPreviousIcon/> </IconButton>
         <IconButton onClick={playVideo}> <PlayArrowIcon/> </IconButton>

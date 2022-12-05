@@ -7,6 +7,7 @@ import NavigationBar from './NavigationBar';
 import ViewerCommentTabs from './ViewCommentTabs';
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
+import PublishedListCard from './PublishedListCard';
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -34,23 +35,51 @@ const HomeScreen = () => {
     if(store.isDeleteListModalOpen()){
         modalJSX = <MUIDeleteModal/>
     }
-    
+
+    let cards = []
+
+    for(let pair in store.loadIdNamePairs){
+        cards.push(pair.published ? 
+            <ListCard
+                        key={pair._id}
+                        idNamePair={pair}
+                        songs={pair.songs}
+                    />
+                    :
+                    <PublishedListCard 
+                        key={pair._id}
+                        idNamePair={pair}
+                        songs={pair.songs}
+                    />
+            )
+    }
+
     let listCard = "";
     if (store) {
         listCard = 
             <List sx={{  left: '0%' }}>
             {
-                store.idNamePairs.map((pair) => (
+                store.idNamePairs.map((pair) => ( 
+                    
+                    pair.published ?
+                    <PublishedListCard 
+                        key={pair._id}
+                        idNamePair={pair}
+                        songs={pair.songs}
+                    />
+                    :
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}
                         songs={pair.songs}
-                        selected={false}
                     />
+                    
+                    
                 ))
             }
             </List>;
     }
+
     return (
         <div id="playlist-selector">
             

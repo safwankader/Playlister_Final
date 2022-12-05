@@ -12,13 +12,13 @@ const playlistSchema = new Schema(
         ownerEmail: { type: String, required: true },
         ownerName : {type : String, required : false},
         published : {type : Boolean, default : false,  required : false}, 
-        likes : {type : [{
-            userEmail : String
-        }] , required : false},
-        dislikes : {type : [{
-            userEmail : String
-        }], required : false},
+        likes : {type : Number, default : 0, required : false},
+        dislikes : {type : Number, default : 0, required : false},
         listens : {type : Number, default : 0, required : false},
+        comments : {type : [{
+            owner : String,
+            comment : String
+        }], required : true},
         songs: { type: [{
             title: String,
             artist: String,

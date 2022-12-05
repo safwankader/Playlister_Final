@@ -26,16 +26,18 @@ import PublishedSongList from './PublishedSongList';
     
     @author McKilla Gorilla
 */
-function ListCard(props) {
+function PublishedListCard(props) {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
+    const [like, setLike] = useState(false);
+    const [dislike, setDislike] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const { idNamePair, songs,selected} = props;
 
 
-    console.log(auth.user)
+
 
 
     function handleLoadList(event, id) {
@@ -44,10 +46,11 @@ function ListCard(props) {
             if (_id.indexOf('list-card-text-') >= 0)
                 _id = ("" + _id).substring("list-card-text-".length);
 
-            console.log("load " + event.target.id);
+            console.log("load-" + event.target.id);
 
             // CHANGE THE CURRENT LIST
             store.setCurrentList(id);
+            console.log(store.youtubeQueue);
         }
     }
 
@@ -99,8 +102,38 @@ function ListCard(props) {
 
     }
 
-   
-    
+    async function toggleLike() {
+        
+        let newLike = !like;
+        if(newLike && dislike){
+            setDislike(false)
+            
+            if(idNamePair.dislikes !== 0){
+                idNamePair.dislikes--;
+            }
+        }
+        newLike ?  idNamePair.likes++ : idNamePair.likes--;
+        setLike(newLike);
+        store.updateLikeDislike(idNamePair._id,idNamePair.likes,idNamePair.dislikes);
+        
+    }
+
+    async function toggleDislike(){
+        
+        let newDislike = !dislike;
+        if(newDislike && like ){
+            setLike(false)
+            
+
+            if(idNamePair.likes !== 0){
+                idNamePair.likes--;
+            }
+        }
+        newDislike ?  idNamePair.dislikes++ : idNamePair.dislikes--;
+        setDislike(newDislike);
+        store.updateLikeDislike(idNamePair._id,idNamePair.likes,idNamePair.dislikes);
+        
+    }
 
     async function handleDeleteList(event, id) {
         event.stopPropagation();
@@ -114,12 +147,42 @@ function ListCard(props) {
         selectClass = "published-list-card";
     }
 
+    let likeIcon = 
+    <ThumbUpOffAltIcon onClick={(event) => {
+        event.stopPropagation();
+        toggleLike();
+    }} style={{fontSize:'30pt'}} />
+
+    let dislikeIcon = 
+    <ThumbDownOffAltIcon onClick={(event) => {
+        event.stopPropagation();
+        toggleDislike();
+    }} style={{fontSize:'30pt'}} />
+    
+    if(like){
+        likeIcon = <ThumbUpIcon onClick={(event) => {
+            event.stopPropagation();
+            toggleLike();
+        }} style={{fontSize:'30pt'}} />
+    }
+
+    if(dislike){
+        dislikeIcon = <ThumbDownAlt onClick={(event) => {
+            event.stopPropagation();
+            toggleDislike();
+        }} style={{fontSize:'30pt'}} />
+    }
+
 
 
     let songCards = "";
 
     if(store.currentList){
-        
+        if(store.currentList.published){
+            songCards =
+                <PublishedSongList/>
+             }
+             else{
                 songCards = 
                 <div id="unpublished-song-card-list">
                 <List 
@@ -139,7 +202,7 @@ function ListCard(props) {
                  </List> 
                  
                  </div>
-             
+             }
     
      }
 
@@ -151,6 +214,9 @@ function ListCard(props) {
 
     })
 
+
+
+    
 
     let cardElement =
         <ListItem
@@ -172,9 +238,67 @@ function ListCard(props) {
 
                 By &nbsp;&nbsp;&nbsp;{idNamePair.owner}
             </Typography>
+            <div> { idNamePair.published? 
+            
+            <div class='published-elements'>
+
             
             
+            <div className='likes-dislikes'>
+                <IconButton
+                sx={{ml : "1rem", mt : "-1rem"}} >
+                    { likeIcon }
+                </IconButton>
+
+                <Typography
+                sx={{fontSize : '15pt', fontWeight : 'bold', ml : "1rem"}}>
+                    {idNamePair.likes}
+                </Typography>
             
+                <IconButton
+                sx={{ml : "1rem", mt : "-1rem"}}>
+                    { dislikeIcon }
+                </IconButton>
+                <Typography
+                sx={{fontSize : '15pt',fontWeight : 'bold' , ml : "1rem"}}
+                >
+                    {idNamePair.dislikes}
+                </Typography>
+                </div>
+
+
+                <div className='published-song-texts'>
+                <Typography
+                id='publish-date'
+                component='div'
+                sx={{fontSize: '10pt'}}
+            >
+
+                Published :  {idNamePair.createdAt}
+
+
+                
+            </Typography>
+                <Typography
+                id='listens-count'
+                component='div'
+                sx={{fontSize: '10pt'}}
+            >
+                Listens :  {idNamePair.listens}
+            </Typography>
+
+            <KeyboardDoubleArrowDownIcon
+            id={`open-list-${idNamePair._id}`}
+            sx={{fontSize: '28pt', mt : '-1rem'}}
+            onClick={(event) => {
+                store.closeCurrentList();
+                event.stopPropagation();
+                setExpanded(true);
+                handleLoadList(event, idNamePair._id)
+            }}
+            ></KeyboardDoubleArrowDownIcon>
+            </div>
+            </div> : 
         <div>
             <KeyboardDoubleArrowDownIcon
             id={`open-list-${idNamePair._id}`}
@@ -188,6 +312,12 @@ function ListCard(props) {
             }}
             ></KeyboardDoubleArrowDownIcon>
         </div>
+
+
+        }</div>
+
+            
+            
 
             </div>
         </ListItem>
@@ -220,13 +350,60 @@ function ListCard(props) {
             }
             
         <div id='list-card-buttons'>
+        
+            <div> {idNamePair.published ?
+             <div className='published-elements'> 
+             <div className='likes-dislikes-expanded'>
+             <IconButton
+                sx={{ml : "1rem", mt : "-1rem"}} >
+                    { likeIcon }
+                </IconButton>
+
+                <Typography
+                sx={{fontSize : '15pt', fontWeight : 'bold', ml : "1rem"}}>
+                    {idNamePair.likes}
+                </Typography>
             
+                <IconButton
+                sx={{ml : "1rem", mt : "-1rem"}}>
+                    { dislikeIcon }
+                </IconButton>
+                <Typography
+                sx={{fontSize : '15pt',fontWeight : 'bold' , ml : "1rem"}}
+                >
+                    {idNamePair.dislikes}
+                </Typography>
+            </div>
+             <div className='published-song-texts'>
+             <Typography
+                id='publish-date'
+                component='div'
+                sx={{fontSize: '10pt'}}
+            >
+
+                Published :  {idNamePair.createdAt}
+                
+            </Typography>
+                <Typography
+                id='listens-count'
+                component='div'
+                sx={{fontSize: '10pt'}}
+            >
+                Listens :  {idNamePair.listens}
+            </Typography>
+            </div>
+            
+            </div> 
+            : 
             <div>
                 <EditToolbar
                 class='edit-toolbar'
                 />
             </div>
             
+            }
+
+            </div>
             <div id='space-between'></div>
             <div className={idNamePair.published ? 'expanded-list-buttons-published' : ''} >
             <Button
@@ -247,7 +424,21 @@ function ListCard(props) {
                 sx={{ml : 2}}>
                 DUPLICATE
             </Button>
-            
+            { idNamePair.published ? 
+            <div>
+                <div
+            className='close-arrow'>
+            <KeyboardDoubleArrowUpIcon
+            id={`close-list-${idNamePair._id}`}
+            onClick={(event) => {
+                event.stopPropagation();
+                setExpanded(false);
+                store.closeCurrentList();
+            }}
+            sx={{fontSize : '28pt'}}
+            ></KeyboardDoubleArrowUpIcon>
+            </div>
+            </div> :
             <Button
             id='publish-list-button'
             className='list-card-button'
@@ -260,7 +451,7 @@ function ListCard(props) {
             sx={{ml : 2}}>
             PUBLISH
                 </Button>
-             
+             }
             
             </div>
             <div
@@ -306,4 +497,4 @@ function ListCard(props) {
     );
 }
 
-export default ListCard;
+export default PublishedListCard;
