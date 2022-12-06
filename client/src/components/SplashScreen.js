@@ -3,7 +3,7 @@ export default function SplashScreen() {
     return (
         <div id="splash-screen">
             <span id="main-text">Playlister</span>
-            
+            <p>Create, edit and share wonderful playlists with your friends and tell them all about it!</p>
             <div id="home-screen-buttons">
                 <Link to='/login/'><button class="home-screen-button" id="login-button">
                     Login existing user

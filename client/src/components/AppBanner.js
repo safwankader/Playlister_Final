@@ -33,9 +33,6 @@ export default function AppBanner() {
         store.closeCurrentList();
     }
 
-    const handleCloseList = () => {
-        store.closeCurrentList();
-    }
 
     const menuId = 'primary-search-account-menu';
     const loggedOutMenu = (

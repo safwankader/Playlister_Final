@@ -34,7 +34,9 @@ function PublishedListCard(props) {
     const [like, setLike] = useState(false);
     const [dislike, setDislike] = useState(false);
     const [expanded, setExpanded] = useState(false);
+
     const { idNamePair, songs,selected} = props;
+
 
 
 
@@ -49,8 +51,9 @@ function PublishedListCard(props) {
             console.log("load-" + event.target.id);
 
             // CHANGE THE CURRENT LIST
+
             store.setCurrentList(id);
-            console.log(store.youtubeQueue);
+            console.log(store.currentList);
         }
     }
 
@@ -225,6 +228,9 @@ function PublishedListCard(props) {
             class={selectClass}
             sx={{ marginTop: '15px', display: 'flex',p: 1 }}
             style={{ width: '90%', fontSize: '30pt' }}
+            onClick={() => {
+                store.updateQueue(idNamePair._id)
+            }}
             onDoubleClick={handleToggleEdit}
         >
             <div
@@ -294,7 +300,7 @@ function PublishedListCard(props) {
                 store.closeCurrentList();
                 event.stopPropagation();
                 setExpanded(true);
-                handleLoadList(event, idNamePair._id)
+                handleLoadList(event, idNamePair._id);  
             }}
             ></KeyboardDoubleArrowDownIcon>
             </div>
@@ -328,6 +334,9 @@ function PublishedListCard(props) {
             id={idNamePair._id}
             key={idNamePair._id}
             class={selectClass}
+            onClick={() => {
+                store.updateQueue(idNamePair._id)
+            }}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
             style={{ display : "flex" , flexDirection : 'column', width :'90%', fontSize: '30pt', height : '13cm'}}
             

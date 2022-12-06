@@ -5,26 +5,20 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import IconButton from '@mui/material/IconButton';
 import { GlobalStoreContext } from '../store'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 
-function YoutubePlayer() {
+function YoutubePlayer(props) {
   const { store } = useContext(GlobalStoreContext);
-  let name = "";
-  let songNum = "";
-  let title = "";
-  let artist = "";
+ 
+
+  const { youTubeId } = props;
   let player = "";
+  
 
-  if(store.currentList){
-    name = store.currentList.name;
-  }
-
-  if(store.youtubeQueue){
-    songNum = store.youtubeQueue.songNumberPlaying;
-    title = store.youtubeQueue.songNamePairs.title;
-    artist = store.youtubeQueue.songNamePairs.artist;
-  }
+  
+  
+ 
   const onPlayerReady = (event) => {
     // access to player in all event handlers via event.target
     event.target.playVideo();
@@ -59,12 +53,13 @@ function YoutubePlayer() {
 
   return (
   <div id='youtube-video-card'>
-    {store.currentList ?<YouTube id='youtube-video' videoId={store.songInPlayer} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>}
-    
-    <span>Playlist: {name}</span>
-    <span>Song #: {songNum}</span>
-    <span>Title: {title}</span>
-    <span>Artist: {artist}</span>
+    {/* {store.currentList ?<YouTube id='youtube-video' videoId={youTubeId} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>} */}
+    {store.songInPlayer ? <YouTube id='youtube-video' videoId={youTubeId} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>} 
+
+    <span>Playlist: {}</span>
+    <span>Song #: {store.songInPlayer ? store.songNumberPlaying + 1 : ""}</span>
+    <span>Title: {store.songNamePairs[store.songNumberPlaying].title}</span>
+    <span>Artist: {store.songNamePairs[store.songNumberPlaying].artist}</span>
     <div id='player-controls'>
         <IconButton onClick={previousSong}> <SkipPreviousIcon/> </IconButton>
         <IconButton onClick={playVideo}> <PlayArrowIcon/> </IconButton>

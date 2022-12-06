@@ -59,6 +59,7 @@ getPlaylistsByQuery = async (req,res) =>{
 
 
     const query = req.body.query;
+    console.log(query);
     await Playlist.find(query, (err, playlists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
@@ -70,7 +71,8 @@ getPlaylistsByQuery = async (req,res) =>{
         }
         else{
 
-            let pairs = [];
+
+                    let pairs = [];
                     for (let key in playlists) {
                         
                         let list = playlists[key];
@@ -78,6 +80,7 @@ getPlaylistsByQuery = async (req,res) =>{
                             _id: list._id,
                             name: list.name,
                             owner : `${list.ownerName}`,
+                            songs : list.songs,
                             comments : list.comments,
                             published : list.published,
                             likes : list.likes,
@@ -136,6 +139,9 @@ getPlaylistById = async (req, res) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }
+        else{
+            return res.status(200).json({ success: true, playlist: list })
+        }
         console.log("Found list: " + JSON.stringify(list));
 
         // DOES THIS LIST BELONG TO THIS USER?
@@ -145,7 +151,7 @@ getPlaylistById = async (req, res) => {
                 console.log("req.userId: " + req.userId);
                 if (user._id == req.userId) {
                     console.log("correct user!");
-                    return res.status(200).json({ success: true, playlist: list })
+                    
                 }
                 else {
                     console.log("incorrect user!");

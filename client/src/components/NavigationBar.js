@@ -3,16 +3,32 @@ import PeopleIcon from '@mui/icons-material/People';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import Fab from '@mui/material/Fab'
 import { TextField } from '@mui/material';
+import { Link } from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home';
 import SortIcon from '@mui/icons-material/Sort';
-import { useContext, useState } from 'react'
-import { GlobalStoreContext } from '../store'
+import { useContext, useState } from 'react';
+import { GlobalStoreContext } from '../store';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 function NavigationBar() {
 
     const { store } = useContext(GlobalStoreContext);
     const [text, setText] = useState("");
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
 
+    const menuId = 'primary-search-account-menu';
+
+    
+
+    const handleProfileMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     function handleLoadUserPairs() {
         store.loadIdNamePairs();
@@ -31,7 +47,7 @@ function NavigationBar() {
     function handleFindByUser(){
         if(text !== ""){
             store.getPlaylistsByQuery({
-                owner : text
+                ownerName : text
             })
 
             setText("");
@@ -41,6 +57,27 @@ function NavigationBar() {
     function handleUpdateText(event) {
         setText(event.target.value);
       }
+
+      const sortbymenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
+        </Menu>
+    );
 
 
 
@@ -91,14 +128,19 @@ function NavigationBar() {
                 variant='extended'
                 justify='space-between'
                 color="secondary"
+                aria-controls={menuId}
+                aria-haspopup="true"
                 aria-label='sort-by'
                 className='navbar-button'
+                onClick={handleProfileMenuOpen}
                 sx={{ml : 1, mr : 1}}
                 >
                 <SortIcon />
                 SORT BY
                 </Fab>
-
+{
+    sortbymenu
+}
             
             </div>
     )
