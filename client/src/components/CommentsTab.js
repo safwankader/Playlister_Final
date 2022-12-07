@@ -49,14 +49,10 @@ function CommentsTab(){
       
   }
   let commentCards = <div id='comments-list'></div>
-  if(store.currentList){
-    store.currentList.comments.map((comment,index) =>{
-      console.log('comment : ' + JSON.stringify(comment))
-      console.log('index: ' + index)
-    })
-  }
   
+
   if(store.currentList){
+    
     commentCards = 
     <div id='comments-list'>
       <List>
@@ -64,7 +60,7 @@ function CommentsTab(){
           store.currentList.comments.map((comment, index) => (
             <CommentCard
                 index={index}
-                comment={store.currentList.comments[index]}
+                comment={comment}
               />
           ))
         }

@@ -3,7 +3,6 @@ import PeopleIcon from '@mui/icons-material/People';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import Fab from '@mui/material/Fab'
 import { TextField } from '@mui/material';
-import { Link } from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home';
 import SortIcon from '@mui/icons-material/Sort';
 import { useContext, useState } from 'react';
@@ -20,7 +19,30 @@ function NavigationBar() {
 
     const menuId = 'primary-search-account-menu';
 
-    
+    const handleSortByName = () => {
+        store.nameSort();
+        handleMenuClose();
+    }
+
+    const handleSortByListens = () => {
+        store.listensSort();
+        handleMenuClose();
+    }
+
+    const handleSortByLikes= () => {
+        store.likesSort();
+        handleMenuClose();
+    }
+
+    const handleSortByDislikes = () => {
+        store.dislikesSort();
+        handleMenuClose();
+    }
+
+    // const handleSortByPublishDate= () => {
+    //     store.publishDateSort();
+    //     handleMenuClose();
+    // }
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -74,8 +96,11 @@ function NavigationBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
+            <MenuItem onClick={handleSortByName}>Name (A-Z)</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Publish Date (Newest)</MenuItem>
+            <MenuItem onClick={handleSortByListens}>Listens (Higest - Low)</MenuItem>
+            <MenuItem onClick={handleSortByLikes}>Likes (Highest - Low)</MenuItem>
+            <MenuItem onClick={handleSortByDislikes}>Dislikes (Highest - Low)</MenuItem>
         </Menu>
     );
 

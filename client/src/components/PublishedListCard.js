@@ -17,6 +17,8 @@ import List from '@mui/material/List';
 import EditToolbar from './EditToolbar'
 import Button from '@mui/material/Button';
 import PublishedSongList from './PublishedSongList';
+import Link from '@mui/material/Link';
+
 
 
 /*
@@ -57,43 +59,14 @@ function PublishedListCard(props) {
         }
     }
 
-    function handleKeyPress(event) {
-        if (event.code === "Enter") {
-            if (text !== "") {
-                let id = event.target.id.substring("list-".length);
-                store.changeListName(id, text);
-            }
-            toggleEdit();
-        }
-    }
-    function handleUpdateText(event) {
-        setText(event.target.value);
-    }
-
-    function handleToggleEdit(event) {
+    async function handleUserProfile(event) {
         event.stopPropagation();
-        if(!idNamePair.published){
-            toggleEdit();
-        }
-        
-    }
+        let owner = idNamePair.owner;
+        store.getPlaylistsByQuery({
+            ownerName : owner
+        })
 
-    function toggleEdit() {
-        let newActive = !editActive;
-        if (newActive) {
-            store.setIsListNameEditActive();
-        }
-        setEditActive(newActive);
-    }
-
-
-    async function handlePublishList(event, id){
-        event.stopPropagation();
-        let _id = event.target.id;
-        _id = ("" + _id).substring("publish-list-".length);
-        store.publishList(id);
-        setExpanded(false);
-        store.closeCurrentList();
+        setText("");
     }
     
 
@@ -219,7 +192,6 @@ function PublishedListCard(props) {
 
 
 
-    
 
     let cardElement =
         <ListItem
@@ -231,7 +203,6 @@ function PublishedListCard(props) {
             onClick={() => {
                 store.updateQueue(idNamePair._id)
             }}
-            onDoubleClick={handleToggleEdit}
         >
             <div
             id='list-cards-styler'>
@@ -242,9 +213,18 @@ function PublishedListCard(props) {
                 sx={{fontSize: '10pt'}}
             >
 
-                By &nbsp;&nbsp;&nbsp;{idNamePair.owner}
+                
+                By &nbsp;&nbsp;&nbsp;
+                <Link
+                    component="button"
+                    variant="body2"
+                    color="inherit"
+                    onClick={handleUserProfile}
+                    >
+                    {idNamePair.owner}
+                </Link>
             </Typography>
-            <div> { idNamePair.published? 
+            <div> 
             
             <div class='published-elements'>
 
@@ -304,23 +284,8 @@ function PublishedListCard(props) {
             }}
             ></KeyboardDoubleArrowDownIcon>
             </div>
-            </div> : 
-        <div>
-            <KeyboardDoubleArrowDownIcon
-            id={`open-list-${idNamePair._id}`}
-            sx={{fontSize: '28pt', position : 'relative', mt : -2 ,ml : 90, p : 1}}
-            onClick={(event) => {
-                store.closeCurrentList();
-                event.stopPropagation();
-                setExpanded(true);
-                console.log(idNamePair)
-                handleLoadList(event, idNamePair._id)
-            }}
-            ></KeyboardDoubleArrowDownIcon>
-        </div>
-
-
-        }</div>
+            </div> 
+            </div>
 
             
             
@@ -360,7 +325,7 @@ function PublishedListCard(props) {
             
         <div id='list-card-buttons'>
         
-            <div> {idNamePair.published ?
+            <div> 
              <div className='published-elements'> 
              <div className='likes-dislikes-expanded'>
              <IconButton
@@ -403,14 +368,7 @@ function PublishedListCard(props) {
             </div>
             
             </div> 
-            : 
-            <div>
-                <EditToolbar
-                class='edit-toolbar'
-                />
-            </div>
-            
-            }
+        
 
             </div>
             <div id='space-between'></div>
@@ -433,7 +391,7 @@ function PublishedListCard(props) {
                 sx={{ml : 2}}>
                 DUPLICATE
             </Button>
-            { idNamePair.published ? 
+
             <div>
                 <div
             className='close-arrow'>
@@ -447,20 +405,7 @@ function PublishedListCard(props) {
             sx={{fontSize : '28pt'}}
             ></KeyboardDoubleArrowUpIcon>
             </div>
-            </div> :
-            <Button
-            id='publish-list-button'
-            className='list-card-button'
-            variant="contained"
-            onClick={(event) => {
-                event.stopPropagation();
-                handlePublishList(event, idNamePair._id)
-            }
-        }
-            sx={{ml : 2}}>
-            PUBLISH
-                </Button>
-             }
+            </div> 
             
             </div>
             <div
@@ -480,27 +425,6 @@ function PublishedListCard(props) {
         </div>
         </ListItem>
     }
-
-    if (editActive) {
-        cardElement =
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + idNamePair._id}
-                label="Playlist Name"
-                name="name"
-                autoComplete="Playlist Name"
-                className='unpublished-list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={idNamePair.name}
-                inputProps={{style: {fontSize: 18 }}}
-                InputLabelProps={{style: {fontSize: 24}, width : "80%"}}
-                autoFocus
-            />
-    }
-    
     return (
         cardElement
     );

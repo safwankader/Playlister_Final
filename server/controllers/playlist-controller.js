@@ -220,6 +220,10 @@ getPlaylists = async (req, res) => {
         return res.status(200).json({ success: true, data: playlists })
     }).catch(err => console.log(err))
 }
+
+updateComments = async(req,res) => {
+    
+}
 updatePlaylist = async (req, res) => {
     const body = req.body
     console.log("updatePlaylist: " + JSON.stringify(body));
@@ -255,6 +259,7 @@ updatePlaylist = async (req, res) => {
                     list.dislikes = body.playlist.dislikes;
                     list.published = body.playlist.published;
                     list.comments = body.playlist.comments;
+                    list.publishedAt = body.playlist.publishedAt;
                     list
                         .save()
                         .then(() => {

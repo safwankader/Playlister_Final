@@ -524,9 +524,11 @@ body {
 }
 
 #comments-list {
+  display: flex;
   height: 34.5rem;
   width: 100%;
   overflow: scroll;
+  flex-direction: column-reverse;
 }
 
 #list-card-styler {

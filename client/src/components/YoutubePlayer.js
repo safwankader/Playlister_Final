@@ -21,7 +21,7 @@ function YoutubePlayer(props) {
  
   const onPlayerReady = (event) => {
     // access to player in all event handlers via event.target
-    event.target.playVideo();
+    // event.target.playVideo();
     player = event.target;
 
   }

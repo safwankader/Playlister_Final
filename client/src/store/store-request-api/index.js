@@ -32,7 +32,8 @@ export const createPlaylist = (newListName, newSongs, userEmail, userName, newCo
         likes : 0,
         dislikes : 0,
         listens : 0,
-        songs: newSongs
+        songs: newSongs,
+        publishedAt : new Date()
     })
 }
 export const getPlaylistsByQuery = (query) => api.get('/playlists/query', query)
@@ -45,6 +46,8 @@ export const updatePlaylistById = (id, playlist) => {
         playlist : playlist
     })
 }
+
+
 
 const apis = {
     createPlaylist,

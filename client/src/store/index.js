@@ -492,7 +492,8 @@ function GlobalStoreContextProvider(props) {
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload: queriedArray
-                })
+                });
+                history.push('/')
             }
             else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
@@ -507,6 +508,7 @@ function GlobalStoreContextProvider(props) {
             if (response.data.success) {
                 let playlist = response.data.playlist;
                 playlist.published = true;
+                playlist.publishedAt = new Date();
                 async function updateList(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
@@ -794,17 +796,15 @@ function GlobalStoreContextProvider(props) {
                         owner : `${auth.user.firstName} ${auth.user.lastName}`,
                         comment : comment
                     })
-
-
-                    response = await api.updatePlaylistById(store.currentList._id,playlist)
-
+                    console.log("p", playlist)
+                    response = await api.updatePlaylistById(playlist._id,playlist)
+                    console.log("here")
                     if(response.data.success){
                         storeReducer({
-                            type : GlobalStoreActionType.UPDATE_PLAYLIST,
-                            payload : response.data.playlist
+                            type : GlobalStoreActionType.SET_CURRENT_LIST,
+                            payload : playlist
                         })
                         history.push('/');
-
 
 
                     }
@@ -841,6 +841,43 @@ function GlobalStoreContextProvider(props) {
 
         asyncUpdateLikesDislikes(id,likes,dislikes);
     }
+
+    store.nameSort = async function () {
+        store.idNamePairs.sort(function(a, b){
+            if(a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
+            if(a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
+            return 0;
+        });
+        history.push('/');
+    }
+
+    store.listensSort = async function () {
+        store.idNamePairs.sort(function(a, b){
+            return b.listens - a.listens;
+        })
+        history.push('/');
+    }
+    store.likesSort = async function () {
+        store.idNamePairs.sort(function(a, b){
+            return b.likes - a.likes;
+        })
+        history.push('/');
+    }
+    store.dislikesSort = async function () {
+        store.idNamePairs.sort(function(a, b){
+            return b.dislikes - a.dislikes;
+        })
+        history.push('/');
+    }
+
+    // store.publishDateSort = async function () {
+    //     store.idNamePairs.sort(function(a,b) {
+    //         if (!a.published) return 1;
+    //         if (!b.published) return -1;
+    //         return new Date(b.createdAt) - new Date(a.createdAt);
+    //     })
+    //     history.push('/')
+    // }
 
     store.undo = function () {
         if (store.currentModal === CurrentModal.NONE)
