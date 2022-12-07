@@ -44,6 +44,7 @@ function PublishedListCard(props) {
 
 
 
+
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
             let _id = event.target.id;
@@ -56,6 +57,12 @@ function PublishedListCard(props) {
 
             store.setCurrentList(id);
             console.log(store.currentList);
+        }
+    }
+
+    function publishDate() {
+        if(idNamePair.publishedAt){
+            return Date(idNamePair.publishedAt).split(" ").slice(1,4).join(" ")
         }
     }
 
@@ -232,7 +239,7 @@ function PublishedListCard(props) {
                 sx={{fontSize: '10pt'}}
             >
 
-                <b>Published : </b> {idNamePair.createdAt}
+                <b>Published : </b> {publishDate()}
 
 
                 
@@ -329,7 +336,7 @@ function PublishedListCard(props) {
                 
              <span>
 
-                <b>Published :</b>  {idNamePair.createdAt}
+                <b>Published :</b>  {publishDate()}
                 </span>
                 &nbsp;&nbsp;&nbsp;
             

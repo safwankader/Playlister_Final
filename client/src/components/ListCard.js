@@ -35,8 +35,6 @@ function ListCard(props) {
     const { idNamePair, songs,selected} = props;
 
 
-    console.log(auth.user)
-
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {

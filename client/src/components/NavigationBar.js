@@ -42,10 +42,10 @@ function NavigationBar() {
         handleMenuClose();
     }
 
-    // const handleSortByPublishDate= () => {
-    //     store.publishDateSort();
-    //     handleMenuClose();
-    // }
+    const handleSortByPublishDate= () => {
+        store.publishDateSort();
+        handleMenuClose();
+    }
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -58,8 +58,8 @@ function NavigationBar() {
     function handleLoadUserPairs() {
         if(text !== ""){
             store.getPlaylistsByQuery({
-                name : text,
-                ownerEmail : auth.user.ownerEmail,
+                ownerName : auth.user.userName,
+                name : text
                 
             })
             console.log(auth.user)
@@ -112,7 +112,7 @@ function NavigationBar() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleSortByName}>Name (A-Z)</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Publish Date (Newest)</MenuItem>
+            <MenuItem onClick={handleSortByPublishDate}>Publish Date (Newest)</MenuItem>
             <MenuItem onClick={handleSortByListens}>Listens (Higest - Low)</MenuItem>
             <MenuItem onClick={handleSortByLikes}>Likes (Highest - Low)</MenuItem>
             <MenuItem onClick={handleSortByDislikes}>Dislikes (Highest - Low)</MenuItem>

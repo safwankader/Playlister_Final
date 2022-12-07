@@ -86,6 +86,7 @@ getPlaylistsByQuery = async (req,res) =>{
                             likes : list.likes,
                             dislikes : list.dislikes,
                             listens : list.listens,
+                            publishedAt : list.publishedAt,
                             createdAt : Date(list.createdAt).split(" ").slice(1,4).join(" ")
                         };
                         if(pair.published){
@@ -196,7 +197,7 @@ getPlaylistPairs = async (req, res) => {
                             likes : list.likes,
                             dislikes : list.dislikes,
                             listens : list.listens,
-                            createdAt : Date(list.createdAt).split(" ").slice(1,4).join(" ")
+                            publishedAt : list.publishedAt
                         };
                         pairs.push(pair);
                     }
@@ -245,7 +246,7 @@ updatePlaylist = async (req, res) => {
         playlist.dislikes = body.playlist.dislikes;
         playlist.listens = body.playlist.listens;
         playlist.published = body.playlist.published;
-        playlist.publishAt = body.playlist.publishAt;
+        playlist.publishedAt = body.playlist.publishedAt;
         playlist
             .save()
             .then(() => {

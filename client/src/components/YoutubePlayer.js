@@ -56,7 +56,7 @@ function YoutubePlayer(props) {
     {/* {store.currentList ?<YouTube id='youtube-video' videoId={youTubeId} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>} */}
     {store.songInPlayer ? <YouTube id='youtube-video' videoId={youTubeId} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>} 
 
-    <span>Playlist: {}</span>
+    <span>Playlist: {store.playerListName}</span>
     <span>Song #: {store.songInPlayer ? store.songNumberPlaying + 1 : ""}</span>
     <span>Title: {store.songNamePairs[store.songNumberPlaying].title}</span>
     <span>Artist: {store.songNamePairs[store.songNumberPlaying].artist}</span>
