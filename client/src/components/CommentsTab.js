@@ -34,9 +34,8 @@ function CommentsTab(){
     }
     
     function addComment(){
-      if (text !== "") {
+      if (text !== ""  && store.playerList) {
         store.addComment(text); 
-        forceUpdate();
      }
       setText("");
     }
@@ -51,13 +50,13 @@ function CommentsTab(){
   let commentCards = <div id='comments-list'></div>
   
 
-  if(store.currentList){
+  if(store.playerList){
     
     commentCards = 
     <div id='comments-list'>
       <List>
         {
-          store.currentList.comments.map((comment, index) => (
+          store.playerList.comments.map((comment, index) => (
             <CommentCard
                 index={index}
                 comment={comment}
@@ -74,17 +73,6 @@ function CommentsTab(){
             commentCards
           }
           <div id="add-comment-input">
-          <Fab 
-                color="primary" 
-                aria-label="add"
-                size="medium"
-                id="add-comment-button"
-                onClick={addComment}
-                disabled={cannotAddComment}
-                sx={{my : 1, mr: 1.5}}
-            >
-                <AddIcon />
-            </Fab>
             
             <TextField id="add-comment-textfield" onKeyPress={handleKeyPress} onChange={handleUpdateText} value={text} label="Add Comment" variant="filled" />
           </div>

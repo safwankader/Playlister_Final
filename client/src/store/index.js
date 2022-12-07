@@ -83,7 +83,7 @@ function GlobalStoreContextProvider(props) {
         currentSong : null,
         listToUpdate : null,
         newListCounter: 0,
-        playerListId: null,
+        playerList: null,
         playerListName : "",
         queue: [],
         songNumberPlaying: 0,
@@ -121,7 +121,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -142,7 +142,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: null,
+                    playerList: null,
                     playerListName : "",
                     queue: [],
                     songNumberPlaying: 0,
@@ -167,7 +167,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter + 1,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -188,7 +188,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -209,7 +209,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -230,7 +230,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -253,7 +253,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : payload,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -274,7 +274,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: payload.playerListId,
+                    playerList: payload.playerList,
                     playerListName : payload.playerListName,
                     queue: payload.queue,
                     songNumberPlaying: payload.songNumberPlaying,
@@ -295,7 +295,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -316,7 +316,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -338,7 +338,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: payload.currentSong,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -358,7 +358,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: payload.currentSong,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -378,7 +378,7 @@ function GlobalStoreContextProvider(props) {
                     currentSong: null,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
-                    playerListId: store.playerListId,
+                    playerList: store.playerList,
                     playerListName : store.playerListName,
                     queue: store.queue,
                     songNumberPlaying: store.songNumberPlaying,
@@ -652,6 +652,8 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.SET_SONG_TO_PLAY,
             payload: {
+                playerList : store.playerList,
+                playerListName : store.PlayerListName,
                 queue : store.queue,
                 songNumberPlaying: songIndex,
                 songInPlayer: store.queue[songIndex],
@@ -690,7 +692,7 @@ function GlobalStoreContextProvider(props) {
                     response = await updatePlaylistById(id,playlist);
                     if(response.data.success){
                         let queueObject = {
-                            playerListId: id,
+                            playerList : playlist,
                             playerListName : playlist.name,
                             queue: urls,
                             songNumberPlaying: 0,
@@ -847,20 +849,27 @@ function GlobalStoreContextProvider(props) {
 
     store.addComment = function(comment){
         async function asyncAddComment(comment){
-            let response = await api.getPlaylistById(store.currentList._id)
+            let response = await api.getPlaylistById(store.playerList._id)
                 if(response.data.success){
                     let playlist = response.data.playlist;
                     playlist.comments.push({
                         owner : `${auth.user.firstName} ${auth.user.lastName}`,
                         comment : comment
                     })
-                    console.log("p", playlist)
-                    response = await api.updatePlaylistById(store.currentList._id,playlist)
-                    console.log("here")
+                    response = await api.updatePlaylistById(store.playerList._id,playlist)
                     if(response.data.success){
+                        let queueObject = {
+                            playerList : playlist,
+                            playerListName : store.playerListName,
+                            queue: store.queue,
+                            songNumberPlaying: store.songNumberPlaying,
+                            songInPlayer: store.songInPlayer,
+                            songNamePairs: store.songNamePairs,
+                            idNamePairs : store.idNamePairs
+                        };
                         storeReducer({
-                            type : GlobalStoreActionType.SET_CURRENT_LIST,
-                            payload : playlist
+                            type : GlobalStoreActionType.SET_SONG_TO_PLAY,
+                            payload : queueObject
                         })
                         history.push('/');
                     }

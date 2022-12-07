@@ -7,7 +7,6 @@ function CommentCard(props) {
 
     const {comment, index} = props;
 
-    console.log(store.currentList.comments[index]);
 
     return(
         <div
