@@ -9,10 +9,13 @@ import { useContext, useState } from 'react';
 import { GlobalStoreContext } from '../store';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import AuthContext from '../auth'
+
 
 function NavigationBar() {
 
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [text, setText] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -53,7 +56,19 @@ function NavigationBar() {
     };
 
     function handleLoadUserPairs() {
-        store.loadIdNamePairs();
+        if(text !== ""){
+            store.getPlaylistsByQuery({
+                name : text,
+                ownerEmail : auth.user.ownerEmail,
+                
+            })
+            console.log(auth.user)
+            setText("");
+        }
+        else{
+            store.loadIdNamePairs();
+        }
+        
     }
 
     function handleFindByName(){

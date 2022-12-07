@@ -21,8 +21,10 @@ function Statusbar() {
     if (store.currentList)
         text = store.currentList.name;
 
-    function handleCreateNewList() {
+    function handleCreateNewList(event) {
+            event.stopPropagation();
             store.createNewList();
+            store.loadIdNamePairs();
     }
     return (
         <div id="playlister-statusbar" className={statusName}>

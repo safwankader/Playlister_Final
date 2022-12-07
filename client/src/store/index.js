@@ -797,7 +797,7 @@ function GlobalStoreContextProvider(props) {
                         comment : comment
                     })
                     console.log("p", playlist)
-                    response = await api.updatePlaylistById(playlist._id,playlist)
+                    response = await api.updatePlaylistById(store.currentList._id,playlist)
                     console.log("here")
                     if(response.data.success){
                         storeReducer({
@@ -805,8 +805,6 @@ function GlobalStoreContextProvider(props) {
                             payload : playlist
                         })
                         history.push('/');
-
-
                     }
                 }
             }
@@ -833,7 +831,7 @@ function GlobalStoreContextProvider(props) {
                         type : GlobalStoreActionType.UPDATE_PLAYLIST,
                         payload : playlist
                     })
-                    store.loadIdNamePairs();
+                
                 }
 
             }
@@ -870,14 +868,14 @@ function GlobalStoreContextProvider(props) {
         history.push('/');
     }
 
-    // store.publishDateSort = async function () {
-    //     store.idNamePairs.sort(function(a,b) {
-    //         if (!a.published) return 1;
-    //         if (!b.published) return -1;
-    //         return new Date(b.createdAt) - new Date(a.createdAt);
-    //     })
-    //     history.push('/')
-    // }
+    store.publishDateSort = async function () {
+        store.idNamePairs.sort(function(a,b) {
+            if (!a.published) return 1;
+            if (!b.published) return -1;
+            return new Date(b.publishedAt) - new Date(a.publishedAt);
+        })
+        history.push('/')
+    }
 
     store.undo = function () {
         if (store.currentModal === CurrentModal.NONE)

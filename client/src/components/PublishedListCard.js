@@ -118,10 +118,6 @@ function PublishedListCard(props) {
         store.markListForDeletion(id);
     }
 
-    let selectClass = "unpublished-list-card";
-    if (idNamePair.published) {
-        selectClass = "published-list-card";
-    }
 
     let likeIcon = 
     <ThumbUpOffAltIcon onClick={(event) => {
@@ -154,32 +150,8 @@ function PublishedListCard(props) {
     let songCards = "";
 
     if(store.currentList){
-        if(store.currentList.published){
             songCards =
                 <PublishedSongList/>
-             }
-             else{
-                songCards = 
-                <div id="unpublished-song-card-list">
-                <List 
-                    sx={{ width: '100%'}}
-                >
-                    {
-                        store.currentList.songs.map((song, index) => (
-                            <SongCard
-                                id={'playlist-song-' + (index)}
-                                key={'playlist-song-' + (index)}
-                                index={index}
-                                song={song}
-                            />
-                        ))  
-                        
-                    }
-                 </List> 
-                 
-                 </div>
-             }
-    
      }
 
 
@@ -197,7 +169,7 @@ function PublishedListCard(props) {
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
-            class={selectClass}
+            class={'published-list-card'}
             sx={{ marginTop: '15px', display: 'flex',p: 1 }}
             style={{ width: '90%', fontSize: '30pt' }}
             onClick={() => {
@@ -260,7 +232,7 @@ function PublishedListCard(props) {
                 sx={{fontSize: '10pt'}}
             >
 
-                Published :  {idNamePair.createdAt}
+                <b>Published : </b> {idNamePair.createdAt}
 
 
                 
@@ -270,7 +242,7 @@ function PublishedListCard(props) {
                 component='div'
                 sx={{fontSize: '10pt'}}
             >
-                Listens :  {idNamePair.listens}
+                <b>Listens :</b>  {idNamePair.listens}
             </Typography>
 
             <KeyboardDoubleArrowDownIcon
@@ -295,21 +267,23 @@ function PublishedListCard(props) {
 
     if(expanded) {
         cardElement =
+        <div id='list-cards-styler-expanded'>
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
-            class={selectClass}
+            class='published-list-card-expanded'
             onClick={() => {
                 store.updateQueue(idNamePair._id)
             }}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
-            style={{ display : "flex" , flexDirection : 'column', width :'90%', fontSize: '30pt', height : '13cm'}}
+            style={{ display : "flex" , flexDirection : 'column', width : '100%', fontSize: '30pt', minHeight : '13cm'}}
             
         >
-            <div
-            id='list-cards-styler'>
+            
 
             <Box sx={{ position : "relative", p: 1, mt : -2.5, ml : -1, fontSize: '20pt'}}>{idNamePair.name}</Box>
+
+            <div className='top-elements-expanded'>
             <Typography
                 id='list-owner'
                 component='div'
@@ -319,15 +293,7 @@ function PublishedListCard(props) {
                 By &nbsp;&nbsp;&nbsp;{idNamePair.owner}
             </Typography>
 
-            {
-                songCards
-            }
-            
-        <div id='list-card-buttons'>
-        
-            <div> 
-             <div className='published-elements'> 
-             <div className='likes-dislikes-expanded'>
+            <div className='likes-dislikes-expanded'>
              <IconButton
                 sx={{ml : "1rem", mt : "-1rem"}} >
                     { likeIcon }
@@ -348,34 +314,40 @@ function PublishedListCard(props) {
                     {idNamePair.dislikes}
                 </Typography>
             </div>
-             <div className='published-song-texts'>
-             <Typography
-                id='publish-date'
-                component='div'
-                sx={{fontSize: '10pt'}}
-            >
+            </div>
 
-                Published :  {idNamePair.createdAt}
+            {
+                songCards
+            }
+            
+  
+        
+         
+             <div className='bottom-elements-expanded'> 
+             
+             <div className='published-song-texts-expanded'>
                 
-            </Typography>
-                <Typography
-                id='listens-count'
-                component='div'
-                sx={{fontSize: '10pt'}}
-            >
-                Listens :  {idNamePair.listens}
-            </Typography>
+             <span>
+
+                <b>Published :</b>  {idNamePair.createdAt}
+                </span>
+                &nbsp;&nbsp;&nbsp;
+            
+                <span>
+                    <b>
+                Listens :</b>  {idNamePair.listens}
+                </span>
+        
             </div>
             
-            </div> 
+           
         
 
-            </div>
-            <div id='space-between'></div>
-            <div className={idNamePair.published ? 'expanded-list-buttons-published' : ''} >
+
+            <div className='expanded-list-buttons-published' >
             <Button
                 id='delete-list-button'
-                className='list-card-button'
+                className='list-card-button published-button'
                 onClick={(event) => {
                     handleDeleteList(event, idNamePair._id)
                 }}
@@ -385,16 +357,14 @@ function PublishedListCard(props) {
             </Button>
             <Button
                 id='duplicate-list-button'
-                className='list-card-button'
+                className='list-card-button published-button'
                 onClick={handleDuplicateList}
                 variant="contained"
                 sx={{ml : 2}}>
                 DUPLICATE
             </Button>
-
-            <div>
-                <div
-            className='close-arrow'>
+            <div
+            className='close-arrow published-button'>
             <KeyboardDoubleArrowUpIcon
             id={`close-list-${idNamePair._id}`}
             onClick={(event) => {
@@ -405,25 +375,14 @@ function PublishedListCard(props) {
             sx={{fontSize : '28pt'}}
             ></KeyboardDoubleArrowUpIcon>
             </div>
-            </div> 
             
             </div>
-            <div
-            className='close-arrow'>
-            <KeyboardDoubleArrowUpIcon
-            id={`close-list-${idNamePair._id}`}
-            onClick={(event) => {
-                event.stopPropagation();
-                setExpanded(false);
-                store.closeCurrentList();
-            }}
-            sx={{fontSize : '28pt'}}
-            ></KeyboardDoubleArrowUpIcon>
-            </div>
-            </div>
+            </div> 
+        
 
-        </div>
+        
         </ListItem>
+        </div>
     }
     return (
         cardElement

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
-import { Grid, Typography, List, ListItem, ListItemText, styled } from '@mui/material';
+import { Grid, Typography, List, ListItem, ListItemText, styled, ListItemIcon } from '@mui/material';
 
 
 
@@ -10,12 +10,18 @@ function PublishedSongList() {
     let list = "";
     if(store.currentList){
         list = 
-        <List >
+        <List 
+        style={{ width: '90%', fontSize: '35pt' , height : '14cm'}}>
             {
                 store.currentList.songs.map((song,index) => (
                     <ListItem>
+
+                        <ListItemIcon
+                        sx={{fontSize : "25pt"}}>
+                        {index + 1}. {song.title}
+                        </ListItemIcon>
                         <ListItemText>
-                           {index} . {song.title}
+                        
                         </ListItemText>
                     </ListItem>
                 ))

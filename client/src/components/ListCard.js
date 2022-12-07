@@ -82,12 +82,15 @@ function ListCard(props) {
 
 
     async function handlePublishList(event, id){
+        if(store.currentList.songs.length > 0){
         event.stopPropagation();
         let _id = event.target.id;
         _id = ("" + _id).substring("publish-list-".length);
         store.publishList(id);
         setExpanded(false);
         store.closeCurrentList();
+        }
+        
     }
     
 
@@ -153,6 +156,8 @@ function ListCard(props) {
 
 
     let cardElement =
+    <div
+            id='list-cards-styler'>
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
@@ -161,8 +166,8 @@ function ListCard(props) {
             style={{ width: '90%', fontSize: '30pt' }}
             onDoubleClick={handleToggleEdit}
         >
-            <div
-            id='list-cards-styler'>
+            
+                <div>
             <Typography sx={{ p: 1, mt : -2.5, ml : -1,  flexGrow: 1 , fontSize: '18pt'}}>{idNamePair.name}</Typography>
             <Typography
                 id='list-owner'
@@ -173,12 +178,13 @@ function ListCard(props) {
                 By &nbsp;&nbsp;&nbsp;{idNamePair.owner}
             </Typography>
             
-            
+            </div>
+            <div className='space-between'></div>
             
         <div>
             <KeyboardDoubleArrowDownIcon
             id={`open-list-${idNamePair._id}`}
-            sx={{fontSize: '28pt', position : 'relative', mt : -2 ,ml : 90, p : 1}}
+            sx={{fontSize: '28pt', my : '2rem'}}
             onClick={(event) => {
                 store.closeCurrentList();
                 event.stopPropagation();
@@ -189,8 +195,9 @@ function ListCard(props) {
             ></KeyboardDoubleArrowDownIcon>
         </div>
 
-            </div>
+            
         </ListItem>
+        </div>
 
     if(expanded) {
         cardElement =
@@ -228,7 +235,7 @@ function ListCard(props) {
             </div>
             
             <div id='space-between'></div>
-            <div className={idNamePair.published ? 'expanded-list-buttons-published' : ''} >
+            <div>
             <Button
                 id='delete-list-button'
                 className='list-card-button'
@@ -291,7 +298,7 @@ function ListCard(props) {
                 label="Playlist Name"
                 name="name"
                 autoComplete="Playlist Name"
-                className='unpublished-list-card'
+                className='unpublished-list-card edit-active'
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
                 defaultValue={idNamePair.name}
