@@ -1,6 +1,7 @@
 import { GlobalStoreContext } from '../store'
 import List from '@mui/material/List';
 import CommentCard from './CommentCard';
+import AuthContext from '../auth'
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
@@ -16,7 +17,7 @@ function useForceUpdate(){
 
 
 function CommentsTab(){
-    
+    const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [text,setText] = useState("");
     const forceUpdate = useForceUpdate();
@@ -41,8 +42,8 @@ function CommentsTab(){
     }
 
     let cannotAddComment = true;
-  if(store.currentList !== null){
-    if(store.currentList.published){
+  if(store.playerList !== null && !auth.guest){
+    if(store.playerList.published){
       cannotAddComment = false;
     }
       
@@ -74,7 +75,7 @@ function CommentsTab(){
           }
           <div id="add-comment-input">
             
-            <TextField id="add-comment-textfield" onKeyPress={handleKeyPress} onChange={handleUpdateText} value={text} label="Add Comment" variant="filled" />
+            <TextField id="add-comment-textfield" onKeyPress={handleKeyPress} disabled={cannotAddComment} onChange={handleUpdateText} value={text} label="Add Comment" variant="filled" />
           </div>
         </div>
     )

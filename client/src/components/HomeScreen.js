@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
 import List from '@mui/material/List';
@@ -9,6 +10,7 @@ import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
 import PublishedListCard from './PublishedListCard';
 
+
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -16,11 +18,18 @@ import PublishedListCard from './PublishedListCard';
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
 
     
 
     useEffect(() => {
-        store.loadIdNamePairs();
+        if(!auth.guest){
+            store.loadIdNamePairs();
+        }
+        else{
+            store.loadAllPlaylistPairs();
+        }
+        
     }, []);
 
 

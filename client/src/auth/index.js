@@ -12,6 +12,7 @@ export const AuthActionType = {
     LOGOUT_USER: "LOGOUT_USER",
     REGISTER_USER: "REGISTER_USER",
     ERROR: "ERROR",
+    GUEST: "GUEST"
 }
 
 function AuthContextProvider(props) {
@@ -19,6 +20,7 @@ function AuthContextProvider(props) {
         user: null,
         loggedIn: false,
         errorMessage: "",
+        guest : false
     });
     const history = useHistory();
 
@@ -34,6 +36,7 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: payload.loggedIn,
                     errorMessage: "",
+                    guest : false
                 });
             }
             case AuthActionType.LOGIN_USER: {
@@ -41,6 +44,7 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: true,
                     errorMessage: "",
+                    guest : false
                 })
             }
             case AuthActionType.LOGOUT_USER: {
@@ -48,6 +52,7 @@ function AuthContextProvider(props) {
                     user: null,
                     loggedIn: false,
                     errorMessage: "",
+                    guest : false
                 })
             }
             case AuthActionType.REGISTER_USER: {
@@ -55,6 +60,15 @@ function AuthContextProvider(props) {
                     user: payload.user,
                     loggedIn: true,
                     errorMessage: "",
+                    guest : false
+                })
+            }
+            case AuthActionType.GUEST: {
+                return setAuth({
+                    user: payload.user,
+                    loggedIn: true,
+                    errorMessage: "",
+                    guest : true
                 })
             }
             case AuthActionType.ERROR: {
@@ -62,6 +76,7 @@ function AuthContextProvider(props) {
                     user: null,
                     loggedIn: false,
                     errorMessage: payload.errorMessage,
+                    guest : auth.guest
                 })
             }
             default:
@@ -125,6 +140,41 @@ function AuthContextProvider(props) {
                     errorMessage: error.response.data.errorMessage
                 }
             });
+        }
+    }
+
+    auth.useAsGuest = async function () {
+        try {
+            let response = await api.registerUser("Guest", "Guest", "User", "guest@playlister.stonybrook.org", "password", "password");
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.GUEST,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                response = await api.loginUser("guest@playlister.stonybrook.org","password");
+                if (response.status === 200) {
+                    authReducer({
+                        type: AuthActionType.GUEST,
+                        payload: {
+                            user: response.data.user
+                        }
+                    })
+                    history.push("/");
+                }
+            }
+        } catch (error) {
+            let response2 = await api.loginUser("guest@playlister.stonybrook.org","password");
+            if (response2.status === 200) {
+                authReducer({
+                    type: AuthActionType.GUEST,
+                    payload: {
+                        user: response2.data.user
+                    }
+                })
+                history.push("/");
+            }
         }
     }
 

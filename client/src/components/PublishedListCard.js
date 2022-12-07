@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
 import AuthContext from '../auth';
 import { Typography } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
@@ -12,9 +11,6 @@ import { IconButton } from '@mui/material';
 import ThumbDownAlt from '@mui/icons-material/ThumbDownAlt';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import SongCard from './SongCard.js'
-import List from '@mui/material/List';
-import EditToolbar from './EditToolbar'
 import Button from '@mui/material/Button';
 import PublishedSongList from './PublishedSongList';
 import Link from '@mui/material/Link';
@@ -125,19 +121,19 @@ function PublishedListCard(props) {
     <ThumbUpOffAltIcon onClick={(event) => {
         event.stopPropagation();
         toggleLike();
-    }} style={{fontSize:'30pt'}} />
+    }}  style={{fontSize:'30pt'}} />
 
     let dislikeIcon = 
     <ThumbDownOffAltIcon onClick={(event) => {
         event.stopPropagation();
         toggleDislike();
-    }} style={{fontSize:'30pt'}} />
+    }}  style={{fontSize:'30pt'}} />
     
     if(like){
         likeIcon = <ThumbUpIcon onClick={(event) => {
             event.stopPropagation();
             toggleLike();
-        }} style={{fontSize:'30pt'}} />
+        }}  style={{fontSize:'30pt'}} />
     }
 
     if(dislike){
@@ -145,6 +141,10 @@ function PublishedListCard(props) {
             event.stopPropagation();
             toggleDislike();
         }} style={{fontSize:'30pt'}} />
+    }
+
+    if(auth.guest){
+        console.log("FIX THE LIKE ICONS!!")
     }
 
 
@@ -206,6 +206,7 @@ function PublishedListCard(props) {
             
             <div className='likes-dislikes'>
                 <IconButton
+                disabled={auth.guest}
                 sx={{ml : "1rem", mt : "-1rem"}} >
                     { likeIcon }
                 </IconButton>
@@ -216,6 +217,7 @@ function PublishedListCard(props) {
                 </Typography>
             
                 <IconButton
+                disabled={auth.guest}
                 sx={{ml : "1rem", mt : "-1rem"}}>
                     { dislikeIcon }
                 </IconButton>
@@ -297,6 +299,7 @@ function PublishedListCard(props) {
 
             <div className='likes-dislikes-expanded'>
              <IconButton
+                disabled={auth.guest}
                 sx={{ml : "1rem", mt : "-1rem"}} >
                     { likeIcon }
                 </IconButton>
@@ -307,6 +310,7 @@ function PublishedListCard(props) {
                 </Typography>
             
                 <IconButton
+                disabled={auth.guest}
                 sx={{ml : "1rem", mt : "-1rem"}}>
                     { dislikeIcon }
                 </IconButton>
@@ -347,7 +351,8 @@ function PublishedListCard(props) {
 
 
             <div className='expanded-list-buttons-published' >
-            <Button
+                {auth.user.userName === idNamePair.owner ? 
+                <Button
                 id='delete-list-button'
                 className='list-card-button published-button'
                 onClick={(event) => {
@@ -356,15 +361,16 @@ function PublishedListCard(props) {
                 sx={{ml : 2}}
                 variant="contained">
                 DELETE
-            </Button>
-            <Button
+            </Button>: <div></div>}
+            {auth.guest ? <div></div> : <Button
                 id='duplicate-list-button'
                 className='list-card-button published-button'
                 onClick={handleDuplicateList}
                 variant="contained"
                 sx={{ml : 2}}>
                 DUPLICATE
-            </Button>
+            </Button> }
+            
             <div
             className='close-arrow published-button'>
             <KeyboardDoubleArrowUpIcon

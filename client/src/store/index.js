@@ -484,6 +484,23 @@ function GlobalStoreContextProvider(props) {
 
     }
 
+    store.loadAllPlaylistPairs = function() {
+        async function asyncLoadAllPlaylistPairs(){
+            const response = await api.getAllPlaylistPairs();
+            if(response.data.success){
+                let pairsArray = response.data.idNamePairs;
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: pairsArray
+                });
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }
+        asyncLoadAllPlaylistPairs();
+    }
+
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {
         async function asyncLoadIdNamePairs() {

@@ -532,7 +532,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--swatch-accent);
-  height: 32.5rem;
+  height: 34.5rem;
   border-radius: 20px;
 }
 
@@ -541,7 +541,7 @@ body {
   flex-direction: row;
   justify-content: center;
   order: 2;
-  height: 4rem;
+  height: 5rem;
   background-color: #b3d6f8;
   position: relative;
 }

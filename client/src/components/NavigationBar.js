@@ -131,6 +131,7 @@ function NavigationBar() {
                 aria-label='home'
                 className='navbar-button'
                 onClick={handleLoadUserPairs}
+                disabled={auth.guest}
                 sx={{ml : 1}}
                 >
                 <HomeIcon />

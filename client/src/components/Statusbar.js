@@ -20,15 +20,12 @@ function Statusbar() {
     }
     if (store.currentList)
         text = store.currentList.name;
-
-    function handleCreateNewList(event) {
-            event.stopPropagation();
-            store.createNewList();
-            store.loadIdNamePairs();
-    }
-    return (
+    
+    let addListText =<div id="playlister-statusbar" className={statusName}></div> 
+    if(!auth.guest){
+        addListText =
         <div id="playlister-statusbar" className={statusName}>
-            <Fab 
+        <Fab 
                 color="primary" 
                 aria-label="add"
                 id="add-list-button"
@@ -37,7 +34,16 @@ function Statusbar() {
                 <AddIcon />
             </Fab>
                 <Typography variant="h2">Your Lists</Typography>
-        </div> 
+            </div>
+    }
+
+    function handleCreateNewList(event) {
+            event.stopPropagation();
+            store.createNewList();
+            store.loadIdNamePairs();
+    }
+    return (
+            addListText
     );
 }
 

@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom'
+import { useContext } from 'react';
+import AuthContext from '../auth'
 export default function SplashScreen() {
+    const { auth } = useContext(AuthContext);
+    function useAsGuest(){
+        auth.useAsGuest();
+    }
     return (
         <div id="splash-screen">
             <span id="main-text">Playlister</span>
@@ -14,7 +20,7 @@ export default function SplashScreen() {
                 Register an account
             </button>
         </Link>
-        <button class="home-screen-button" id="guest-button">
+        <button class="home-screen-button" onClick={useAsGuest} id="guest-button">
             Continue as Guest
         </button>
         </div>

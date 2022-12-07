@@ -165,7 +165,6 @@ getPlaylistById = async (req, res) => {
 }
 
 getPlaylistPairs = async (req, res) => {
-    console.log("getPlaylistPairs");
     await User.findOne({ _id: req.userId }, (err, user) => {
         console.log("find user with id " + req.userId);
         async function asyncFindList(email) {
@@ -208,6 +207,46 @@ getPlaylistPairs = async (req, res) => {
         asyncFindList(user.email);
     }).catch(err => console.log(err))
 }
+
+
+getAllPlaylistPairs = async (req, res) => {
+    await Playlist.find({}, (err, playlists) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!playlists.length) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Playlists not found` })
+        }
+        else{
+                    let pairs = [];
+                    for (let key in playlists) {
+                        
+                        let list = playlists[key];
+                        let pair = {
+                            _id: list._id,
+                            name: list.name,
+                            owner : `${list.ownerName}`,
+                            songs : list.songs,
+                            comments : list.comments,
+                            published : list.published,
+                            likes : list.likes,
+                            dislikes : list.dislikes,
+                            listens : list.listens,
+                            publishedAt : list.publishedAt,
+                            createdAt : Date(list.createdAt).split(" ").slice(1,4).join(" ")
+                        };
+                        if(pair.published){
+                            pairs.push(pair);
+                        }
+                        
+                    }
+                    return res.status(200).json({ success: true, idNamePairs: pairs })
+        }
+    }).catch(err => console.log(err))
+}
+
 getPlaylists = async (req, res) => {
     await Playlist.find({}, (err, playlists) => {
         if (err) {
@@ -269,6 +308,7 @@ updatePlaylist = async (req, res) => {
 module.exports = {
     createPlaylist,
     deletePlaylist,
+    getAllPlaylistPairs,
     getPlaylistsByQuery,
     getPlaylistById,
     getPlaylistPairs,
