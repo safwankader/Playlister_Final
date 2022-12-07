@@ -65,6 +65,8 @@ const HomeScreen = () => {
                     <PublishedListCard 
                         key={pair._id}
                         idNamePair={pair}
+                        likedUsers={pair.likes}
+                        dislikedUsers={pair.dislikes}
                         songs={pair.songs}
                     />
                     :

@@ -247,7 +247,7 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.UPDATE_PLAYLIST: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
-                    idNamePairs: store.idNamePairs,
+                    idNamePairs: payload.idNamePairs,
                     currentList: store.currentList,
                     currentSongIndex: -1,
                     currentSong: null,
@@ -658,6 +658,7 @@ function GlobalStoreContextProvider(props) {
                 songNumberPlaying: songIndex,
                 songInPlayer: store.queue[songIndex],
                 songNamePairs: store.songNamePairs,
+                idNamePairs : store.idNamePairs
             }
         });
     }
@@ -673,13 +674,15 @@ function GlobalStoreContextProvider(props) {
                 let updatedNamePairs = store.idNamePairs;
 
                 let index = updatedNamePairs.findIndex(pair => pair._id === id)
-                if(store.playerListId !== id){
+
+                if(!store.playerList || store.playerList._id !== id){
                     playlist.listens++;
+                    updatedNamePairs[index].listens++;
                 }
 
                 
 
-                updatedNamePairs[index].listens++;
+                
                 let urls = []
                 if (playlist.songs.length > 0) {
                     for (let i = 0; i < playlist.songs.length; i++) {
@@ -880,31 +883,99 @@ function GlobalStoreContextProvider(props) {
 
         
 
+    store.isUserLikedPlaylist = function(id){
+        async function getUserLikedPlaylist(id){
+            let response = await api.getPlaylistById(id);
+            if(response.data.success){
+                let likes = response.data.playlist.likes;
+                if (!Array.isArray(likes) || !likes.length) {
+                    console.log("IM NOT AN ARRAY")
+                    return false;
+                  }
+                const likedUser = likes.filter((user) => (user.userName === auth.user.userName))
+                if(likedUser){
+                    return true
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return getUserLikedPlaylist(id)
+    }
+
+    store.isUserDislikedPlaylist = function(id){
+        async function getUserDislikedPlaylist(id){
+            let response = await api.getPlaylistById(id);
+            if(response.data.success){
+                let dislikes = response.data.playlist.likes;
+                const dislikedUser = dislikes.filter((user) => (user.userName === auth.user.userName))
+                
+                if(dislikedUser.userName === auth.user.userName){
+                    console.log(dislikedUser);
+                    return true
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return getUserDislikedPlaylist(id)
+    }
     
 
-    store.updateLikeDislike = function(id, likes,dislikes){
-        async function asyncUpdateLikesDislikes(id, likes,dislikes){
+    store.updateLikeDislike = function(id, like,dislike){
+        async function asyncUpdateLikesDislikes(id, like,dislike){
             let response = await api.getPlaylistById(id);
 
             if(response.data.success){
                 let playlist = response.data.playlist;
-                playlist.likes = likes;
-                playlist.dislikes = dislikes;
-                console.log(playlist);
+                
+                if(like) {
+                    playlist.likes.push({
+                        userName : auth.user.userName
+                    })
+                }
+                if(!like){
+                    playlist.likes = playlist.likes.filter((user) => (user.userName !== auth.user.userName))
+                }
+
+                if(dislike) {
+                    playlist.dislikes.push({
+                        userName : auth.user.userName
+                    })
+                }
+                if(!dislike){
+                    playlist.dislikes = playlist.dislikes.filter((user) => (user.userName !== auth.user.userName))
+                }
                 
                 response = await api.updatePlaylistById(id,playlist)
                 if(response.data.success){
+
+                    let newIdNamePairs = store.idNamePairs;
+
+                    let playlistIndex = newIdNamePairs.findIndex( pair => {
+                        return pair._id === playlist._id;
+                    })
+
+                    newIdNamePairs[playlistIndex].likes = playlist.likes;
+                    newIdNamePairs[playlistIndex].dislikes = playlist.dislikes;
+
                     storeReducer({
                         type : GlobalStoreActionType.UPDATE_PLAYLIST,
-                        payload : playlist
+                        payload : {
+                            playlist : playlist,
+                            idNamePairs : newIdNamePairs
+                        }
                     })
+
                 
                 }
 
             }
         }
 
-        asyncUpdateLikesDislikes(id,likes,dislikes);
+        asyncUpdateLikesDislikes(id,like,dislike);
     }
 
     store.nameSort = async function () {

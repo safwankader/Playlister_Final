@@ -29,8 +29,8 @@ export const createPlaylist = (newListName, newSongs, userEmail, userName, newCo
         ownerEmail: userEmail,
         ownerName : userName,
         comments : newComments,
-        likes : 0,
-        dislikes : 0,
+        likes : [],
+        dislikes : [],
         listens : 0,
         songs: newSongs,
         publishedAt : new Date()

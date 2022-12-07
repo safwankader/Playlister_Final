@@ -31,20 +31,17 @@ import Link from '@mui/material/Link';
 function PublishedListCard(props) {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+    const { idNamePair, likedUsers, dislikedUsers,  songs,selected} = props;
+    const defaultLike = (likedUsers.filter((user) => (user.userName === auth.user.userName))).length !== 0;
+    const defaultDislike = (dislikedUsers.filter((user) => (user.userName === auth.user.userName))).length !== 0;
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const [like, setLike] = useState(false);
-    const [dislike, setDislike] = useState(false);
+    const [like, setLike] = useState(defaultLike);
+    const [dislike, setDislike] = useState(defaultDislike);
     const [expanded, setExpanded] = useState(false);
 
-    const { idNamePair, songs,selected} = props;
 
-
-
-
-
-
-
+    
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
             let _id = event.target.id;
@@ -59,6 +56,7 @@ function PublishedListCard(props) {
             console.log(store.currentList);
         }
     }
+
 
     function publishDate() {
         if(idNamePair.publishedAt){
@@ -86,35 +84,32 @@ function PublishedListCard(props) {
     }
 
     async function toggleLike() {
-        
         let newLike = !like;
+        let newDislike = true;
         if(newLike && dislike){
             setDislike(false)
+            newDislike = false
             
-            if(idNamePair.dislikes !== 0){
-                idNamePair.dislikes--;
-            }
         }
-        newLike ?  idNamePair.likes++ : idNamePair.likes--;
         setLike(newLike);
-        store.updateLikeDislike(idNamePair._id,idNamePair.likes,idNamePair.dislikes);
+
+        
+        store.updateLikeDislike(idNamePair._id,newLike,newDislike);
         
     }
 
     async function toggleDislike(){
         
         let newDislike = !dislike;
+        let newLike = true;
         if(newDislike && like ){
             setLike(false)
             
-
-            if(idNamePair.likes !== 0){
-                idNamePair.likes--;
-            }
+            newLike = false
         }
-        newDislike ?  idNamePair.dislikes++ : idNamePair.dislikes--;
         setDislike(newDislike);
-        store.updateLikeDislike(idNamePair._id,idNamePair.likes,idNamePair.dislikes);
+        store.updateLikeDislike(idNamePair._id,newLike,newDislike);
+
         
     }
 
@@ -217,7 +212,7 @@ function PublishedListCard(props) {
 
                 <Typography
                 sx={{fontSize : '15pt', fontWeight : 'bold', ml : "1rem"}}>
-                    {idNamePair.likes}
+                    {idNamePair.likes.length}
                 </Typography>
             
                 <IconButton
@@ -227,7 +222,7 @@ function PublishedListCard(props) {
                 <Typography
                 sx={{fontSize : '15pt',fontWeight : 'bold' , ml : "1rem"}}
                 >
-                    {idNamePair.dislikes}
+                    {idNamePair.dislikes.length}
                 </Typography>
                 </div>
 
@@ -308,7 +303,7 @@ function PublishedListCard(props) {
 
                 <Typography
                 sx={{fontSize : '15pt', fontWeight : 'bold', ml : "1rem"}}>
-                    {idNamePair.likes}
+                    {idNamePair.likes.length}
                 </Typography>
             
                 <IconButton
@@ -318,7 +313,7 @@ function PublishedListCard(props) {
                 <Typography
                 sx={{fontSize : '15pt',fontWeight : 'bold' , ml : "1rem"}}
                 >
-                    {idNamePair.dislikes}
+                    {idNamePair.dislikes.length}
                 </Typography>
             </div>
             </div>

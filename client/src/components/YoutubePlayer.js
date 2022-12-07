@@ -16,9 +16,13 @@ function YoutubePlayer(props) {
   let player = "";
   
 
-  
-  
- 
+  const onPlayerStateChange = (event) => {
+    if(event.data === 0){
+      nextSong();
+      player.playVideo();
+    }
+  }
+
   const onPlayerReady = (event) => {
     // access to player in all event handlers via event.target
     // event.target.playVideo();
@@ -54,7 +58,7 @@ function YoutubePlayer(props) {
   return (
   <div id='youtube-video-card'>
     {/* {store.currentList ?<YouTube id='youtube-video' videoId={youTubeId} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>} */}
-    {store.songInPlayer ? <YouTube id='youtube-video' videoId={youTubeId} opts={opts} onReady={onPlayerReady} /> : <div id='blank-youtube-page'></div>} 
+    {store.songInPlayer ? <YouTube id='youtube-video' videoId={youTubeId} opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} /> : <div id='blank-youtube-page'></div>} 
 
     <span>Playlist: {store.playerListName}</span>
     <span>Song #: {store.songInPlayer ? store.songNumberPlaying + 1 : ""}</span>
