@@ -96,8 +96,7 @@ export default function AppBanner() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
-
-                    <Typography
+                    {auth.loggedIn ? <Typography
                         id="playlister-title-text"                        
                         variant="h4"
                         noWrap
@@ -105,7 +104,9 @@ export default function AppBanner() {
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
                         Playlister
-                    </Typography>
+                    </Typography> :
+                    <div></div>}
+                    
                     <Box sx={{ flexGrow: 1 }}>{}</Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton

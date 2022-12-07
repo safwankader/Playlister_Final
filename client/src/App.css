@@ -58,8 +58,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-image: linear-gradient(to bottom, #08b8a1, #234367);
-  font-family: "Brush Script MT", cursive;
+  background-image: linear-gradient(to bottom, #f72585, #4361ee);
+  font-family: Arial, Helvetica, sans-serif;
   color: white;
   font-size: 2rem;
   border-color: #123456;
@@ -73,7 +73,8 @@ body {
 }
 
 #main-text {
-  font-size: 5rem;
+  font-size: 7rem;
+  font-family: "Brush Script MT", cursive;
 }
 
 .edit-toolbar {

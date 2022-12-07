@@ -143,10 +143,6 @@ function PublishedListCard(props) {
         }} style={{fontSize:'30pt'}} />
     }
 
-    if(auth.guest){
-        console.log("FIX THE LIKE ICONS!!")
-    }
-
 
 
     let songCards = "";
