@@ -946,47 +946,6 @@ function GlobalStoreContextProvider(props) {
             asyncAddComment(comment);
         }
 
-        
-
-    store.isUserLikedPlaylist = function(id){
-        async function getUserLikedPlaylist(id){
-            let response = await api.getPlaylistById(id);
-            if(response.data.success){
-                let likes = response.data.playlist.likes;
-                if (!Array.isArray(likes) || !likes.length) {
-                    console.log("IM NOT AN ARRAY")
-                    return false;
-                  }
-                const likedUser = likes.filter((user) => (user.userName === auth.user.userName))
-                if(likedUser){
-                    return true
-                }
-                else{
-                    return false;
-                }
-            }
-        }
-        return getUserLikedPlaylist(id)
-    }
-
-    store.isUserDislikedPlaylist = function(id){
-        async function getUserDislikedPlaylist(id){
-            let response = await api.getPlaylistById(id);
-            if(response.data.success){
-                let dislikes = response.data.playlist.likes;
-                const dislikedUser = dislikes.filter((user) => (user.userName === auth.user.userName))
-                
-                if(dislikedUser.userName === auth.user.userName){
-                    console.log(dislikedUser);
-                    return true
-                }
-                else{
-                    return false;
-                }
-            }
-        }
-        return getUserDislikedPlaylist(id)
-    }
     
 
     store.updateLikeDislike = function(id, like,dislike){
