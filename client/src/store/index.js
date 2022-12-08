@@ -960,7 +960,7 @@ function GlobalStoreContextProvider(props) {
                         userName : auth.user.userName
                     })
                 }
-                if(!like){
+                else if(!like){
                     playlist.likes = playlist.likes.filter((user) => (user.userName !== auth.user.userName))
                 }
 
@@ -969,7 +969,7 @@ function GlobalStoreContextProvider(props) {
                         userName : auth.user.userName
                     })
                 }
-                if(!dislike){
+                else if(!dislike){
                     playlist.dislikes = playlist.dislikes.filter((user) => (user.userName !== auth.user.userName))
                 }
                 

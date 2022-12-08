@@ -81,7 +81,7 @@ function PublishedListCard(props) {
 
     async function toggleLike() {
         let newLike = !like;
-        let newDislike = true;
+        let newDislike = dislike;
         if(newLike && dislike){
             setDislike(false)
             newDislike = false
@@ -97,7 +97,7 @@ function PublishedListCard(props) {
     async function toggleDislike(){
         
         let newDislike = !dislike;
-        let newLike = true;
+        let newLike = like;
         if(newDislike && like ){
             setLike(false)
             
