@@ -27,7 +27,7 @@ function PublishedSongList(props) {
                             <b>
                         <ListItemIcon
                         sx={{fontSize : "25pt"}}>
-                        {index + 1}. {song.title}
+                        {index + 1}. {song.title} by {song.artist}
                         </ListItemIcon>
                         </b>
                         </ListItem> 
@@ -35,8 +35,9 @@ function PublishedSongList(props) {
                         <ListItem>
                         <ListItemIcon
                         sx={{fontSize : "25pt"}}>
+                            {index + 1}.&nbsp;
                         <Link onClick={(event) => {handleChangeSong(event,index)}}>
-                        {index + 1}. {song.title}
+                         {song.title} by {song.artist}
                         </Link>
                         </ListItemIcon>
                         </ListItem> 
