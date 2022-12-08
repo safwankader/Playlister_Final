@@ -921,7 +921,7 @@ function GlobalStoreContextProvider(props) {
                 if(response.data.success){
                     let playlist = response.data.playlist;
                     playlist.comments.push({
-                        owner : `${auth.user.firstName} ${auth.user.lastName}`,
+                        owner : `${auth.user.userName}`,
                         comment : comment
                     })
                     response = await api.updatePlaylistById(store.playerList._id,playlist)
