@@ -149,7 +149,7 @@ function PublishedListCard(props) {
 
     if(store.currentList){
             songCards =
-                <PublishedSongList/>
+                <PublishedSongList listId={idNamePair._id}/>
      }
 
 

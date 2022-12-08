@@ -2,11 +2,19 @@ import * as React from 'react';
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
 import { Grid, Typography, List, ListItem, ListItemText, styled, ListItemIcon } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 
-function PublishedSongList() {
+function PublishedSongList(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { listId } = props; 
+
+
+    function handleChangeSong(event, index) {
+        event.stopPropagation();
+        store.changeQueueSong(listId, index);
+    }
     let list = "";
     if(store.currentList){
         list = 
@@ -14,16 +22,25 @@ function PublishedSongList() {
         style={{ width: '90%', fontSize: '35pt' , height : '14cm'}}>
             {
                 store.currentList.songs.map((song,index) => (
-                    <ListItem>
-
+                    store.songNumberPlaying === index && store.playerList && store.playerList._id === listId ?
+                        <ListItem>
+                            <b>
                         <ListItemIcon
                         sx={{fontSize : "25pt"}}>
                         {index + 1}. {song.title}
                         </ListItemIcon>
-                        <ListItemText>
-                        
-                        </ListItemText>
-                    </ListItem>
+                        </b>
+                        </ListItem> 
+                        :
+                        <ListItem>
+                        <ListItemIcon
+                        sx={{fontSize : "25pt"}}>
+                        <Link onClick={(event) => {handleChangeSong(event,index)}}>
+                        {index + 1}. {song.title}
+                        </Link>
+                        </ListItemIcon>
+                        </ListItem> 
+
                 ))
             }
             </List>

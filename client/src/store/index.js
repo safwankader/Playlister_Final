@@ -267,11 +267,11 @@ function GlobalStoreContextProvider(props) {
 
             case GlobalStoreActionType.SET_SONG_TO_PLAY: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: payload.idNamePairs,
                     currentList: store.currentList,
-                    currentSongIndex: -1,
-                    currentSong: null,
+                    currentSongIndex: store.currentSongIndex,
+                    currentSong: store.currentSong,
                     listToUpdate : store.listToUpdate,
                     newListCounter: store.newListCounter,
                     playerList: payload.playerList,
@@ -628,10 +628,12 @@ function GlobalStoreContextProvider(props) {
     // TO SEE IF THEY REALLY WANT TO DELETE THE LIST
 
     store.showEditSongModal = (songIndex, songToEdit) => {
+        console.log("EDITING A SONG")
         storeReducer({
             type: GlobalStoreActionType.EDIT_SONG,
             payload: {currentSongIndex: songIndex, currentSong: songToEdit}
-        });        
+        });      
+
     }
     store.showRemoveSongModal = (songIndex, songToRemove) => {
         storeReducer({
@@ -681,6 +683,52 @@ function GlobalStoreContextProvider(props) {
     }
 
 
+    store.changeQueueSong = function(id, index) {
+        async function changeQueueSong(id,index) {
+            let response = await api.getPlaylistById(id);
+            if(response.data.success){
+                let playlist = response.data.playlist;
+                let updatedNamePairs = store.idNamePairs;
+
+                let urls = store.queue;
+                if(!store.playerList || store.playerList._id !== id){
+                    urls = []
+                    if (playlist.songs.length > 0) {
+                        for (let i = 0; i < playlist.songs.length; i++) {
+                            urls.push(playlist.songs[i].youTubeId)
+                        }
+                    playlist.listens++;
+                    updatedNamePairs[index].listens++;
+                }
+            }
+
+            response = await updatePlaylistById(id,playlist);
+            if(response.data.success){
+                let queueObject = {
+                    playerList : playlist,
+                    playerListName : playlist.name,
+                    queue: urls,
+                    songNumberPlaying: index,
+                    songInPlayer: urls[index],
+                    songNamePairs: playlist.songs,
+                    idNamePairs : updatedNamePairs
+                };
+               
+                storeReducer({
+                    type: GlobalStoreActionType.SET_SONG_TO_PLAY,
+                    payload: queueObject
+                });
+
+                history.push('/')
+                }
+        
+            }
+        }
+        changeQueueSong(id,index);
+
+    }
+
+
     store.updateQueue = function (id) {
         async function playFromBeginning(id) {
             let response = await api.getPlaylistById(id);
@@ -692,7 +740,7 @@ function GlobalStoreContextProvider(props) {
 
                 let index = updatedNamePairs.findIndex(pair => pair._id === id)
 
-                if(!store.playerList || store.playerList._id !== id){
+                if(!store.playerList || store.playerList._id !== id && store.playerList.published){
                     playlist.listens++;
                     updatedNamePairs[index].listens++;
                 }
@@ -1012,13 +1060,13 @@ function GlobalStoreContextProvider(props) {
     }
     store.likesSort = async function () {
         store.idNamePairs.sort(function(a, b){
-            return b.likes - a.likes;
+            return b.likes.length - a.likes.length;
         })
         history.push('/');
     }
     store.dislikesSort = async function () {
         store.idNamePairs.sort(function(a, b){
-            return b.dislikes - a.dislikes;
+            return b.dislikes.length - a.dislikes.length;
         })
         history.push('/');
     }

@@ -593,10 +593,23 @@ body {
 }
 
 .song-card {
+  display: flex;
+  flex-direction: row;
   margin: 10px;
   font-size: 18pt;
   height: auto;
   background-color: #b9c45e;
+  padding: 15px;
+  border-radius: 25px;
+}
+
+.song-card-playing {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  font-size: 18pt;
+  height: auto;
+  background-color: #f50606;
   padding: 15px;
   border-radius: 25px;
 }

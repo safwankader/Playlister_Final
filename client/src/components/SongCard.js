@@ -1,11 +1,19 @@
 import React, { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
+import { Link } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import Button from '@mui/material/Button';
 
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [ draggedTo, setDraggedTo ] = useState(0);
-    const { song, index } = props;
+    const { song, index, listId } = props;
 
+    function handleChangeSong(event, index) {
+        event.preventDefault();
+        event.stopPropagation();
+        store.changeQueueSong(listId,index);
+    }
     function handleDragStart(event) {
         event.dataTransfer.setData("song", index);
     }
@@ -36,14 +44,17 @@ function SongCard(props) {
     function handleRemoveSong(event) {
         store.showRemoveSongModal(index, song);
     }
-    function handleClick(event) {
+    function handleEditSong(event) {
         // DOUBLE CLICK IS FOR SONG EDITING
-        if (event.detail === 2) {
+            event.stopPropagation();
+            event.preventDefault();
             store.showEditSongModal(index, song);
-        }
+            
+       
     }
-
-    let cardClass = "song-card";
+    let nowPlaying = store.playerList && store.playerList._id === listId && store.songNumberPlaying === index;
+    let cardClass = 'song-card'
+    
     return (
         <div
             key={index}
@@ -55,22 +66,40 @@ function SongCard(props) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             draggable="true"
-            onClick={handleClick}
         >
             {index + 1}.
-            <a
+            {nowPlaying ? <b><Link
                 id={'song-' + index + '-link'}
                 className="song-link"
-                href={"https://www.youtube.com/watch?v=" + song.youTubeId}>
+                onClick={(event) => {
+                    handleChangeSong(event,index);
+                }}
+                >
                 {song.title} by {song.artist}
-            </a>
+            </Link> </b>:
+            <Link
+            id={'song-' + index + '-link'}
+            className="song-link"
+            onClick={(event) => {
+                handleChangeSong(event,index);
+            }}
+            >
+            {song.title} by {song.artist}
+        </Link>}
             
+            <div id="space-between"></div>
+            <div id="space-between"></div>
+            <Button
+            onClick={handleEditSong}>
+                <EditIcon></EditIcon>
+            </Button>
             <input
                 type="button"
                 id={"remove-song-" + index}
                 className="song-card-button"
                 value={"\u2715"}
                 onClick={(event) =>{
+                    event.stopPropagation();
                     handleRemoveSong(event)
                 }}
             />

@@ -131,6 +131,7 @@ function ListCard(props) {
                             <SongCard
                                 id={'playlist-song-' + (index)}
                                 key={'playlist-song-' + (index)}
+                                listId={idNamePair._id}
                                 index={index}
                                 song={song}
                             />
@@ -162,11 +163,16 @@ function ListCard(props) {
             class={selectClass}
             sx={{ marginTop: '15px', display: 'flex',p: 1 }}
             style={{ width: '90%', fontSize: '30pt' }}
-            onDoubleClick={handleToggleEdit}
+            onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                store.updateQueue(idNamePair._id)}
+            }
+            
         >
             
                 <div>
-            <Typography sx={{ p: 1, mt : -2.5, ml : -1,  flexGrow: 1 , fontSize: '18pt'}}>{idNamePair.name}</Typography>
+            <Typography onDoubleClick={handleToggleEdit}  sx={{ p: 1, mt : -2.5, ml : -1,  flexGrow: 1 , fontSize: '18pt'}}>{idNamePair.name}</Typography>
             <Typography
                 id='list-owner'
                 component='div'
@@ -203,6 +209,9 @@ function ListCard(props) {
             id={idNamePair._id}
             key={idNamePair._id}
             class={selectClass}
+            onClick={() => {
+                store.updateQueue(idNamePair._id)
+            }}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
             style={{ display : "flex" , flexDirection : 'column', width :'90%', fontSize: '30pt', height : '13cm'}}
             
